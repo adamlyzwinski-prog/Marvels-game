@@ -1,92 +1,35 @@
-.pack-card {
-    position: relative;
-    overflow: hidden;
-}
+<script>
+function renderShop() {
+    const container = document.getElementById('shop-packs');
+    container.innerHTML = '';
 
-.pack-card:nth-child(1) {
-    border: 2px solid #00d2ff;
-    background:
-        linear-gradient(135deg, rgba(0, 210, 255, 0.22), rgba(5, 20, 35, 0.95)),
-        repeating-linear-gradient(
-            45deg,
-            rgba(0, 210, 255, 0.08) 0px,
-            rgba(0, 210, 255, 0.08) 8px,
-            transparent 8px,
-            transparent 16px
-        );
-    box-shadow: 0 0 25px rgba(0, 210, 255, 0.25);
-}
+    packs.forEach(pack => {
+        const div = document.createElement('div');
+        div.className = `pack-card pack-${pack.id}`;
 
-.pack-card:nth-child(2) {
-    border: 2px solid #b026ff;
-    background:
-        linear-gradient(135deg, rgba(176, 38, 255, 0.25), rgba(25, 8, 40, 0.95)),
-        repeating-linear-gradient(
-            -45deg,
-            rgba(176, 38, 255, 0.1) 0px,
-            rgba(176, 38, 255, 0.1) 8px,
-            transparent 8px,
-            transparent 16px
-        );
-    box-shadow: 0 0 25px rgba(176, 38, 255, 0.3);
-}
+        div.innerHTML = `
+            <div>
+                <h3 style="font-family:'Orbitron',sans-serif; margin-top:0;">
+                    ${pack.name}
+                </h3>
 
-.pack-card:nth-child(3) {
-    border: 2px solid #ff1e23;
-    background:
-        linear-gradient(135deg, rgba(255, 30, 35, 0.28), rgba(40, 5, 10, 0.95)),
-        repeating-linear-gradient(
-            45deg,
-            rgba(255, 30, 35, 0.1) 0px,
-            rgba(255, 30, 35, 0.1) 6px,
-            transparent 6px,
-            transparent 14px
-        );
-    box-shadow: 0 0 30px rgba(255, 30, 35, 0.35);
-}
+                <p style="color:#a0aec0;">
+                    Zawiera ${pack.cardsCount} karty oraz ${pack.itemsCount} przedmioty.
+                </p>
+            </div>
 
-.pack-card:nth-child(4) {
-    border: 2px solid #ffd700;
-    background:
-        linear-gradient(135deg, rgba(255, 215, 0, 0.25), rgba(35, 28, 5, 0.95)),
-        repeating-linear-gradient(
-            -45deg,
-            rgba(255, 215, 0, 0.12) 0px,
-            rgba(255, 215, 0, 0.12) 7px,
-            transparent 7px,
-            transparent 15px
-        );
-    box-shadow: 0 0 35px rgba(255, 215, 0, 0.4);
-}
+            <div>
+                <p style="font-family:'Orbitron',sans-serif;">
+                    <strong>Cena: ${pack.price} $</strong>
+                </p>
 
-.pack-card:nth-child(1)::before {
-    background: #00d2ff;
-}
+                <button class="btn" onclick="buyPack('${pack.id}')" ${money < pack.price ? 'disabled' : ''}>
+                    Kup
+                </button>
+            </div>
+        `;
 
-.pack-card:nth-child(2)::before {
-    background: #b026ff;
+        container.appendChild(div);
+    });
 }
-
-.pack-card:nth-child(3)::before {
-    background: #ff1e23;
-}
-
-.pack-card:nth-child(4)::before {
-    background: #ffd700;
-}
-
-.pack-card:nth-child(1):hover {
-    box-shadow: 0 15px 40px rgba(0, 210, 255, 0.4);
-}
-
-.pack-card:nth-child(2):hover {
-    box-shadow: 0 15px 40px rgba(176, 38, 255, 0.45);
-}
-
-.pack-card:nth-child(3):hover {
-    box-shadow: 0 15px 40px rgba(255, 30, 35, 0.45);
-}
-
-.pack-card:nth-child(4):hover {
-    box-shadow: 0 15px 45px rgba(255, 215, 0, 0.5);
-}
+</script>
