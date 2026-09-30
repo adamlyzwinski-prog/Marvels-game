@@ -34,7 +34,6 @@
             min-height: 100vh;
         }
 
-        /* Tło komiksowe / wzór */
         body::before {
             content: "";
             position: fixed;
@@ -45,7 +44,6 @@
             z-index: -1;
         }
 
-        /* Ekran logowania */
         #auth-overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -95,7 +93,6 @@
             outline: none;
         }
 
-        /* Pasek przewijania */
         ::-webkit-scrollbar { width: 8px; height: 8px; }
         ::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.4); border-radius: 4px; }
         ::-webkit-scrollbar-thumb { background: #2a2e43; border-radius: 4px; border: 1px solid rgba(255,255,255,0.1); }
@@ -210,7 +207,6 @@
             font-size: 22px;
         }
 
-        /* Sklep */
         .shop-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -280,7 +276,6 @@
             box-shadow: 0 4px 15px rgba(0,176,155,0.3);
         }
 
-        /* Koło Fortuny */
         .wheel-container {
             text-align: center;
             background: var(--panel-bg);
@@ -361,7 +356,6 @@
             padding-left: 20px;
         }
 
-        /* Karty */
         .card, .wheel-card {
             background: linear-gradient(135deg, #151828, #0b0d17);
             border-radius: 14px;
@@ -457,7 +451,6 @@
             filter: grayscale(1);
         }
 
-        /* Deck */
         .deck-slots {
             display: flex;
             gap: 20px;
@@ -494,7 +487,6 @@
             gap: 25px;
         }
 
-        /* Kody i Kontenery */
         .codes-container {
             background: var(--panel-bg);
             padding: 40px;
@@ -519,7 +511,6 @@
             font-family: 'Orbitron', sans-serif;
         }
 
-        /* Modal */
         #modal {
             display: none;
             position: fixed;
@@ -561,7 +552,6 @@
 </head>
 <body>
 
-    <!-- EKRAN LOGOWANIA -->
     <div id="auth-overlay">
         <div class="auth-box">
             <h2>Marvel Hub</h2>
@@ -585,19 +575,18 @@
         <button class="tab-btn" onclick="switchTab('wheel')">Koło Fortuny</button>
         <button class="tab-btn" onclick="switchTab('codes')">Kody</button>
         <button class="tab-btn" onclick="switchTab('deck')">Deck</button>
+        <button class="tab-btn" onclick="switchTab('items-tab')">Przedmioty</button>
         <button class="tab-btn" onclick="switchTab('index-tab')">Indeks</button>
     </nav>
 
     <main>
-        <!-- SKLEP -->
         <div id="shop" class="tab-content active">
-            <h2>Kup paczki z kartami</h2>
+            <h2>Kup paczki z kartami i przedmiotami</h2>
             <div class="shop-grid" id="shop-packs"></div>
         </div>
 
-        <!-- KOŁO FORTUNY -->
         <div id="wheel" class="tab-content">
-            <h2>Koło Fortuny Kart</h2>
+            <h2>Koło Fortuny Kart i Przedmiotów</h2>
             <div class="wheel-container">
                 <p style="margin-top: 0; color: #a0aec0;">Wybierz tryb kręcenia (35 $ za 1 koło):</p>
                 <div class="spin-count-selector">
@@ -610,7 +599,6 @@
             </div>
         </div>
 
-        <!-- KODY -->
         <div id="codes" class="tab-content">
             <h2>Kody Promocyjne</h2>
             <div class="codes-container">
@@ -620,22 +608,25 @@
             </div>
         </div>
 
-        <!-- DECK -->
         <div id="deck" class="tab-content">
             <h2>Twój Aktywny Deck (5 miejsc)</h2>
             <p style="color: #a0aec0; margin-bottom: 25px;">Kliknij na kartę w Indeksie, aby dodać ją do wolnego slotu w Decku.</p>
             <div class="deck-slots" id="deck-slots-container"></div>
         </div>
 
-        <!-- INDEKS -->
+        <div id="items-tab" class="tab-content">
+            <h2>Przedmioty Związane z Postaciami</h2>
+            <p style="color: #a0aec0; margin-bottom: 25px;">Zarządzaj przedmiotami ze swojej kolekcji.</p>
+            <div class="collection-grid" id="items-grid"></div>
+        </div>
+
         <div id="index-tab" class="tab-content">
             <h2>Indeks Wszystkich Kart Marvela</h2>
-            <p style="color: #a0aec0; margin-bottom: 25px;">Zarządzaj swoją kolekcją, dodawaj karty do decku lub sprzedawaj za gotówkę.</p>
+            <p style="color: #a0aec0; margin-bottom: 25px;">Zarządzaj swoją kolekcją kart, dodawaj karty do decku lub sprzedawaj za gotówkę.</p>
             <div class="collection-grid" id="collection-grid"></div>
         </div>
     </main>
 
-    <!-- MODAL WYNIKU -->
     <div id="modal">
         <div class="modal-content">
             <h3 id="modal-title" style="font-family: 'Orbitron', sans-serif; margin-top: 0; color: #fff;">Zawartość:</h3>
@@ -660,22 +651,39 @@
             { id: 'l2', name: 'Galactus', rarity: 'legendary', value: 100, icon: '🪐' }
         ];
 
+        const allItems = [
+            { id: 'ir_item', name: 'Rdzeń Reaktora Łukowego', rarity: 'rare', value: 10, icon: '🔋', characterId: 'r1' },
+            { id: 'ca_item', name: 'Zniszczona Tarcza', rarity: 'rare', value: 10, icon: '🪙', characterId: 'r2' },
+            { id: 'th_item', name: 'Mjolnir Fragment', rarity: 'rare', value: 10, icon: '🔨', characterId: 'r3' },
+            { id: 'hu_item', name: 'Spodnie Hulka', rarity: 'rare', value: 10, icon: '🩳', characterId: 'r4' },
+            { id: 'bw_item', name: 'Wdowi Bransolet', rarity: 'rare', value: 10, icon: '💍', characterId: 'r5' },
+            { id: 'sp_item', name: 'Sieciomiot', rarity: 'epic', value: 30, icon: '🎯', characterId: 'e1' },
+            { id: 'ds_item', name: 'Klocek Agamotto', rarity: 'epic', value: 30, icon: '🧿', characterId: 'e2' },
+            { id: 'sw_item', name: 'Księga Darkhold', rarity: 'epic', value: 30, icon: '📖', characterId: 'e3' },
+            { id: 'tn_item', name: 'Kamień Nieskończoności', rarity: 'mythic', value: 50, icon: '💎', characterId: 'm1' },
+            { id: 'ss_item', name: 'Srebrna Deska', rarity: 'mythic', value: 50, icon: '🛸', characterId: 'm2' },
+            { id: 'sl_item', name: 'Pióro Scenarzysty', rarity: 'legendary', value: 100, icon: '✒️', characterId: 'l1' },
+            { id: 'ga_item', name: 'Pożeracz Światów', rarity: 'legendary', value: 100, icon: '☄️', characterId: 'l2' }
+        ];
+
         const packs = [
-            { id: 'rare', name: 'Rzadka Paczka', price: 30, cardsCount: 2 },
-            { id: 'epic', name: 'Epicka Paczka', price: 80, cardsCount: 3 },
-            { id: 'mythic', name: 'Mityczna Paczka', price: 150, cardsCount: 3 },
-            { id: 'legendary', name: 'Legendarna Paczka', price: 300, cardsCount: 4 }
+            { id: 'rare', name: 'Rzadka Paczka', price: 30, cardsCount: 2, itemsCount: 1 },
+            { id: 'epic', name: 'Epicka Paczka', price: 80, cardsCount: 3, itemsCount: 2 },
+            { id: 'mythic', name: 'Mityczna Paczka', price: 150, cardsCount: 3, itemsCount: 2 },
+            { id: 'legendary', name: 'Legendarna Paczka', price: 300, cardsCount: 4, itemsCount: 3 }
         ];
 
         let currentUser = null;
         let money = 350;
         let inventory = {}; 
+        let itemInventory = {};
         let activeDeck = [null, null, null, null, null];
         let lastDailyClaim = 0;
         let selectedSpinCount = 1;
         let usedCodes = [];
 
         allCards.forEach(card => { inventory[card.id] = 0; });
+        allItems.forEach(item => { itemInventory[item.id] = 0; });
 
         function switchTab(tabId) {
             document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
@@ -702,7 +710,8 @@
                 }
                 const data = usersDb[username];
                 money = data.money;
-                inventory = data.inventory;
+                inventory = data.inventory || {};
+                itemInventory = data.itemInventory || {};
                 activeDeck = data.activeDeck;
                 lastDailyClaim = data.lastDailyClaim || 0;
                 usedCodes = data.usedCodes || [];
@@ -711,6 +720,7 @@
                     password: password,
                     money: 350,
                     inventory: { ...inventory },
+                    itemInventory: { ...itemInventory },
                     activeDeck: [null, null, null, null, null],
                     lastDailyClaim: 0,
                     usedCodes: []
@@ -718,6 +728,7 @@
                 localStorage.setItem('marvel_users_db', JSON.stringify(usersDb));
                 money = 350;
                 allCards.forEach(card => { inventory[card.id] = 0; });
+                allItems.forEach(item => { itemInventory[item.id] = 0; });
                 activeDeck = [null, null, null, null, null];
                 lastDailyClaim = 0;
                 usedCodes = [];
@@ -738,6 +749,7 @@
                 password: usersDb[currentUser].password,
                 money: money,
                 inventory: inventory,
+                itemInventory: itemInventory,
                 activeDeck: activeDeck,
                 lastDailyClaim: lastDailyClaim,
                 usedCodes: usedCodes
@@ -749,6 +761,7 @@
             document.getElementById('money').innerText = money;
             renderShop();
             renderCollection();
+            renderItems();
             renderDeck();
             saveUserData();
         }
@@ -809,7 +822,7 @@
                 div.innerHTML = `
                     <div>
                         <h3 style="font-family:'Orbitron',sans-serif; margin-top:0;">${pack.name}</h3>
-                        <p style="color:#a0aec0;">Zawiera ${pack.cardsCount} losowe karty.</p>
+                        <p style="color:#a0aec0;">Zawiera ${pack.cardsCount} karty oraz ${pack.itemsCount} przedmioty.</p>
                     </div>
                     <div>
                         <p style="font-family:'Orbitron',sans-serif;"><strong>Cena: ${pack.price} $</strong></p>
@@ -824,7 +837,7 @@
             const container = document.getElementById('collection-grid');
             container.innerHTML = '';
             allCards.forEach(card => {
-                const count = inventory[card.id];
+                const count = inventory[card.id] || 0;
                 const isLocked = count === 0;
                 const div = document.createElement('div');
                 div.className = `card ${card.rarity} ${isLocked ? 'locked' : ''}`;
@@ -842,6 +855,38 @@
                         <div style="display:flex; gap:6px; width:100%; margin-top:5px;">
                             <button class="btn" style="padding:4px; font-size:10px; flex:1; margin-top:0;" onclick="assignToDeck('${card.id}')">Deck</button>
                             <button class="btn btn-sell" style="flex:1; margin-top:0;" onclick="sellCard('${card.id}')">Sprzedaj</button>
+                        </div>
+                    `;
+                }
+
+                div.innerHTML = htmlContent;
+                container.appendChild(div);
+            });
+        }
+
+        function renderItems() {
+            const container = document.getElementById('items-grid');
+            container.innerHTML = '';
+            allItems.forEach(item => {
+                const count = itemInventory[item.id] || 0;
+                const isLocked = count === 0;
+                const associatedChar = allCards.find(c => c.id === item.characterId);
+                const div = document.createElement('div');
+                div.className = `card ${item.rarity} ${isLocked ? 'locked' : ''}`;
+                
+                let htmlContent = `
+                    <div class="card-avatar">${isLocked ? '🔒' : item.icon}</div>
+                    <div class="card-rarity">${item.rarity}</div>
+                    <div class="card-name">${isLocked ? '???' : item.name}</div>
+                    <div style="font-size: 8px; color: #a0aec0;">Postać: ${associatedChar ? associatedChar.name : ''}</div>
+                    <div class="card-value">Wartość: ${item.value} $</div>
+                    <div class="card-count">Posiadasz: ${count}</div>
+                `;
+
+                if (!isLocked) {
+                    htmlContent += `
+                        <div style="width:100%; margin-top:5px;">
+                            <button class="btn btn-sell" style="width:100%; margin-top:0;" onclick="sellItem('${item.id}')">Sprzedaj</button>
                         </div>
                     `;
                 }
@@ -876,7 +921,7 @@
 
         function assignToDeck(cardId) {
             const countInDeck = activeDeck.filter(id => id === cardId).length;
-            const totalOwned = inventory[cardId];
+            const totalOwned = inventory[cardId] || 0;
 
             if (countInDeck >= totalOwned) {
                 alert("Nie masz więcej wolnych sztuk tej karty w ekwipunku!");
@@ -900,7 +945,7 @@
 
         function sellCard(cardId) {
             const countInDeck = activeDeck.filter(id => id === cardId).length;
-            const totalOwned = inventory[cardId];
+            const totalOwned = inventory[cardId] || 0;
 
             if (totalOwned <= countInDeck) {
                 alert("Wszystkie sztuki tej karty są w Decku! Najpierw usuń ją z decku.");
@@ -910,6 +955,16 @@
             const card = allCards.find(c => c.id === cardId);
             inventory[cardId]--;
             money += card.value;
+            updateUI();
+        }
+
+        function sellItem(itemId) {
+            const totalOwned = itemInventory[itemId] || 0;
+            if (totalOwned <= 0) return;
+
+            const item = allItems.find(i => i.id === itemId);
+            itemInventory[itemId]--;
+            money += item.value;
             updateUI();
         }
 
@@ -928,6 +983,21 @@
             return pool[Math.floor(Math.random() * pool.length)];
         }
 
+        function rollItem(chances) {
+            const rand = Math.random();
+            let cumulative = 0;
+            let chosenRarity = 'rare';
+            for (const [rarity, prob] of Object.entries(chances)) {
+                cumulative += prob;
+                if (rand <= cumulative) {
+                    chosenRarity = rarity;
+                    break;
+                }
+            }
+            const pool = allItems.filter(i => i.rarity === chosenRarity);
+            return pool[Math.floor(Math.random() * pool.length)];
+        }
+
         function buyPack(packId) {
             const pack = packs.find(p => p.id === packId);
             if (money < pack.price) return;
@@ -937,8 +1007,14 @@
 
             for (let i = 0; i < pack.cardsCount; i++) {
                 let card = rollCard({ rare: 0.60, epic: 0.25, mythic: 0.12, legendary: 0.03 });
-                inventory[card.id]++;
+                inventory[card.id] = (inventory[card.id] || 0) + 1;
                 pulled.push(card);
+            }
+
+            for (let i = 0; i < pack.itemsCount; i++) {
+                let item = rollItem({ rare: 0.60, epic: 0.25, mythic: 0.12, legendary: 0.03 });
+                itemInventory[item.id] = (itemInventory[item.id] || 0) + 1;
+                pulled.push(item);
             }
 
             showModal(pulled, "Zawartość paczki:");
@@ -959,12 +1035,13 @@
 
                 let track = document.getElementById(`track-${c}`);
                 for (let i = 0; i < 25; i++) {
-                    let card = allCards[Math.floor(Math.random() * allCards.length)];
+                    let pool = Math.random() > 0.5 ? allCards : allItems;
+                    let obj = pool[Math.floor(Math.random() * pool.length)];
                     track.innerHTML += `
-                        <div class="wheel-card ${card.rarity}">
-                            <div class="card-avatar">${card.icon}</div>
-                            <div class="card-rarity">${card.rarity}</div>
-                            <div class="card-name">${card.name}</div>
+                        <div class="wheel-card ${obj.rarity}">
+                            <div class="card-avatar">${obj.icon}</div>
+                            <div class="card-rarity">${obj.rarity}</div>
+                            <div class="card-name">${obj.name}</div>
                         </div>
                     `;
                 }
@@ -999,19 +1076,23 @@
 
             for (let c = 0; c < selectedSpinCount; c++) {
                 let track = document.getElementById(`track-${c}`);
-                let winningCard = rollCard({ rare: 0.60, epic: 0.25, mythic: 0.12, legendary: 0.03 });
+                let isCard = Math.random() > 0.4;
+                let winningObj = isCard ? rollCard({ rare: 0.60, epic: 0.25, mythic: 0.12, legendary: 0.03 }) : rollItem({ rare: 0.60, epic: 0.25, mythic: 0.12, legendary: 0.03 });
                 
-                inventory[winningCard.id]++;
-                pulled.push(winningCard);
+                if (isCard) {
+                    inventory[winningObj.id] = (inventory[winningObj.id] || 0) + 1;
+                } else {
+                    itemInventory[winningObj.id] = (itemInventory[winningObj.id] || 0) + 1;
+                }
+                pulled.push(winningObj);
 
-                // Wstrzyknięcie zwycięskiej karty na odpowiednią pozycję w toru przewijania (np. index 18)
                 const cardNodes = track.children;
                 if (cardNodes[18]) {
-                    cardNodes[18].className = `wheel-card ${winningCard.rarity}`;
+                    cardNodes[18].className = `wheel-card ${winningObj.rarity}`;
                     cardNodes[18].innerHTML = `
-                        <div class="card-avatar">${winningCard.icon}</div>
-                        <div class="card-rarity">${winningCard.rarity}</div>
-                        <div class="card-name">${winningCard.name}</div>
+                        <div class="card-avatar">${winningObj.icon}</div>
+                        <div class="card-rarity">${winningObj.rarity}</div>
+                        <div class="card-name">${winningObj.name}</div>
                     `;
                 }
 
@@ -1030,19 +1111,20 @@
             }
         }
 
-        function showModal(cards, title) {
+        function showModal(items, title) {
             document.getElementById('modal-title').innerText = title;
             const container = document.getElementById('pulled-cards-container');
             container.innerHTML = '';
-            cards.forEach(card => {
+            items.forEach(obj => {
+                const count = inventory[obj.id] !== undefined ? inventory[obj.id] : itemInventory[obj.id];
                 const div = document.createElement('div');
-                div.className = `card ${card.rarity}`;
+                div.className = `card ${obj.rarity}`;
                 div.innerHTML = `
-                    <div class="card-avatar">${card.icon}</div>
-                    <div class="card-rarity">${card.rarity}</div>
-                    <div class="card-name">${card.name}</div>
-                    <div class="card-value">Wartość: ${card.value} $</div>
-                    <div class="card-count">Posiadasz: ${inventory[card.id]}</div>
+                    <div class="card-avatar">${obj.icon}</div>
+                    <div class="card-rarity">${obj.rarity}</div>
+                    <div class="card-name">${obj.name}</div>
+                    <div class="card-value">Wartość: ${obj.value} $</div>
+                    <div class="card-count">Posiadasz: ${count}</div>
                 `;
                 container.appendChild(div);
             });
