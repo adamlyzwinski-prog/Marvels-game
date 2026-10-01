@@ -11,7 +11,6 @@
             --accent: #e50914;
             --text-color: #ffffff;
             
-            /* Kolory rzadkości */
             --rare: #3b82f6;
             --epic: #a855f7;
             --mythic: #ef4444;
@@ -64,7 +63,6 @@
             font-size: 16px;
         }
 
-        /* Pasek przewijania */
         ::-webkit-scrollbar {
             width: 6px;
             height: 6px;
@@ -163,7 +161,6 @@
             display: block;
         }
 
-        /* NOWE, ŁADNIEJSZE PACZKI W SKLEPIE */
         .shop-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -185,7 +182,6 @@
             cursor: pointer;
         }
 
-        /* Efekt wizualny saszetki (foil wrapper look) */
         .pack-visual {
             width: 110px;
             height: 150px;
@@ -211,35 +207,26 @@
             background: linear-gradient(135deg, rgba(30,58,138,0.8), rgba(15,23,42,0.9));
             border: 2px solid var(--rare);
         }
-        .rare-pack .pack-visual {
-            background: linear-gradient(135deg, #1e40af, #3b82f6, #1d4ed8);
-        }
+        .rare-pack .pack-visual { background: linear-gradient(135deg, #1e40af, #3b82f6, #1d4ed8); }
 
         .pack-card.epic-pack {
             background: linear-gradient(135deg, rgba(88,28,135,0.8), rgba(15,23,42,0.9));
             border: 2px solid var(--epic);
         }
-        .epic-pack .pack-visual {
-            background: linear-gradient(135deg, #6b21a8, #a855f7, #581c87);
-        }
+        .epic-pack .pack-visual { background: linear-gradient(135deg, #6b21a8, #a855f7, #581c87); }
 
         .pack-card.mythic-pack {
             background: linear-gradient(135deg, rgba(127,29,29,0.8), rgba(15,23,42,0.9));
             border: 2px solid var(--mythic);
         }
-        .mythic-pack .pack-visual {
-            background: linear-gradient(135deg, #991b1b, #ef4444, #7f1d1d);
-        }
+        .mythic-pack .pack-visual { background: linear-gradient(135deg, #991b1b, #ef4444, #7f1d1d); }
 
         .pack-card.legendary-pack {
             background: linear-gradient(135deg, rgba(113,63,18,0.8), rgba(15,23,42,0.9));
             border: 2px solid var(--legendary);
             box-shadow: 0 0 25px rgba(234, 179, 8, 0.3);
         }
-        .legendary-pack .pack-visual {
-            background: linear-gradient(135deg, #854d0e, #eab308, #ca8a04);
-            box-shadow: 0 0 15px rgba(234,179,8,0.6), inset 0 0 15px rgba(255,255,255,0.4);
-        }
+        .legendary-pack .pack-visual { background: linear-gradient(135deg, #854d0e, #eab308, #ca8a04); }
 
         .pack-card:hover {
             transform: translateY(-5px);
@@ -279,7 +266,6 @@
         }
         .btn-daily:hover { background: #059669; }
 
-        /* Kody promocyjne */
         .codes-container {
             background: rgba(31, 40, 51, 0.9);
             padding: 30px;
@@ -303,7 +289,6 @@
             text-align: center;
         }
 
-        /* Koło Fortuny */
         .wheel-container {
             text-align: center;
             background: rgba(31, 40, 51, 0.9);
@@ -434,7 +419,6 @@
             text-transform: uppercase;
         }
 
-        /* Deck */
         .deck-slots {
             display: flex;
             gap: 15px;
@@ -464,7 +448,6 @@
             background: rgba(31, 40, 51, 0.95);
         }
 
-        /* Indeks / Kolekcja kart */
         .collection-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
@@ -558,12 +541,12 @@
             background: rgba(26, 28, 41, 0.95) !important;
         }
 
-        /* NOWY MODAL OTWIERANIA PACZEK (WYSUWANE KARTY JAK W REALU) */
+        /* MODAL ANIMACJI PACZKI NA CAŁYM EKRANIE */
         #modal {
             display: none;
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.9);
+            background: rgba(0,0,0,0.92);
             justify-content: center;
             align-items: center;
             z-index: 1000;
@@ -575,7 +558,7 @@
             padding: 30px;
             border-radius: 15px;
             text-align: center;
-            max-width: 600px;
+            max-width: 500px;
             width: 90%;
             border: 2px solid var(--accent);
             box-shadow: 0 10px 30px rgba(0,0,0,0.8);
@@ -586,18 +569,43 @@
 
         .pack-opening-area {
             position: relative;
-            width: 180px;
-            height: 250px;
+            width: 200px;
+            height: 280px;
             margin: 20px auto;
             display: flex;
             justify-content: center;
             align-items: center;
+            perspective: 1000px;
         }
 
-        /* Animacja wysuwania karty z paczki */
+        /* Styl zamkniętej paczki do kliknięcia */
+        .closed-pack {
+            width: 150px;
+            height: 220px;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.7), inset 0 0 20px rgba(255,255,255,0.3);
+            border: 3px solid rgba(255,255,255,0.4);
+            animation: pulsePack 1.5s infinite alternate;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.8);
+            font-weight: bold;
+            color: #fff;
+        }
+
+        @keyframes pulsePack {
+            0% { transform: scale(1) rotate(0deg); }
+            50% { transform: scale(1.05) rotate(-2deg); }
+            100% { transform: scale(1) rotate(2deg); }
+        }
+
+        /* Animacja wysuwania karty */
         @keyframes slideOutCard {
             0% {
-                transform: translateY(40px) scale(0.8);
+                transform: translateY(60px) scale(0.6);
                 opacity: 0;
             }
             100% {
@@ -607,13 +615,13 @@
         }
 
         .opening-card-container {
-            animation: slideOutCard 0.5s ease-out forwards;
+            animation: slideOutCard 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
         }
 
         .pack-counter {
             font-size: 14px;
             color: #aaa;
-            margin-bottom: 10px;
+            margin-bottom: 5px;
         }
     </style>
 </head>
@@ -693,11 +701,11 @@
         </div>
     </main>
 
-    <!-- MODAL OTWIERANIA PACZEK (JEDNA KARTA PO DRUGIEJ) -->
+    <!-- MODAL OTWIERANIA PACZKI (PACZKA -> KLIK -> KARTY PO KOLEI) -->
     <div id="modal">
         <div class="modal-content">
             <h3 id="modal-title">Otwieranie paczki...</h3>
-            <div class="pack-counter" id="pack-counter-text">Karta 1 z X</div>
+            <div class="pack-counter" id="pack-counter-text" style="display: none;">Karta 1 z X</div>
             <div class="pack-opening-area" id="pack-opening-area"></div>
             <button class="btn" id="next-card-btn" onclick="nextOpenedCard()" style="display: none; width: 100%;">Następna karta</button>
             <button class="btn" id="finish-pack-btn" onclick="closeModal()" style="display: none; width: 100%;">Super! (Odbierz)</button>
@@ -735,9 +743,10 @@
         let selectedSpinCount = 1;
         let usedCodes = [];
 
-        // Zmienne obsługujące sekwencyjne otwieranie paczki
+        // Zmienne otwierania paczki
         let currentOpenedCardsList = [];
         let currentCardIndex = 0;
+        let activePackConfig = null;
 
         allCards.forEach(card => { inventory[card.id] = 0; });
 
@@ -792,7 +801,6 @@
             document.getElementById('auth-overlay').style.display = 'none';
             
             updateUI();
-            if (typeof initRoulettes === 'function') initRoulettes(1);
         }
 
         function saveUserData() {
@@ -976,11 +984,13 @@
             updateUI();
         }
 
+        // KROK 1: Zakup paczki i wyświetlenie jej zamkniętej na ekranie
         function buyPack(packId) {
             const pack = packs.find(p => p.id === packId);
             if (money < pack.price) return;
             money -= pack.price;
 
+            activePackConfig = pack;
             currentOpenedCardsList = [];
             for (let i = 0; i < pack.cardsCount; i++) {
                 const randomCard = allCards[Math.floor(Math.random() * allCards.length)];
@@ -988,17 +998,32 @@
                 currentOpenedCardsList.push(randomCard);
             }
 
-            currentCardIndex = 0;
-            openPackModalSequence();
+            // Otwórz modal i pokaż ZAMKNIĘTĄ PACZKĘ
+            document.getElementById('modal').style.display = 'flex';
+            document.getElementById('modal-title').innerText = `Otwórz paczkę: ${pack.name}`;
+            document.getElementById('pack-counter-text').style.display = 'none';
+            document.getElementById('next-card-btn').style.display = 'none';
+            document.getElementById('finish-pack-btn').style.display = 'none';
+
+            const area = document.getElementById('pack-opening-area');
+            area.innerHTML = `
+                <div class="closed-pack ${pack.class}" onclick="startOpeningPackSequence()">
+                    <span style="font-size: 36px;">📦</span>
+                    <span style="margin-top: 10px; font-size: 14px;">Kliknij, aby otworzyć!</span>
+                </div>
+            `;
+
             updateUI();
         }
 
-        function openPackModalSequence() {
-            document.getElementById('modal').style.display = 'flex';
-            document.getElementById('modal-title').innerText = "Otwieranie paczki...";
+        // KROK 2: Kliknięcie w paczkę uruchamia pierwszą kartę
+        function startOpeningPackSequence() {
+            currentCardIndex = 0;
+            document.getElementById('pack-counter-text').style.display = 'block';
             showCardInSequence();
         }
 
+        // KROK 3: Wyświetlanie kolejnych kart z paczki
         function showCardInSequence() {
             const container = document.getElementById('pack-opening-area');
             const counterText = document.getElementById('pack-counter-text');
@@ -1023,10 +1048,11 @@
             if (currentCardIndex < currentOpenedCardsList.length - 1) {
                 nextBtn.style.display = 'block';
                 finishBtn.style.display = 'none';
+                document.getElementById('modal-title').innerText = "Wysuwa się karta!";
             } else {
                 nextBtn.style.display = 'none';
                 finishBtn.style.display = 'block';
-                document.getElementById('modal-title').innerText = "Gratulacje! Zawartość paczki:";
+                document.getElementById('modal-title').innerText = "Gratulacje! Ostatnia karta:";
             }
         }
 
