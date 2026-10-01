@@ -163,51 +163,87 @@
             display: block;
         }
 
-        /* Sklep i paczki z wzorkami */
+        /* NOWE, ŁADNIEJSZE PACZKI W SKLEPIE */
         .shop-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 25px;
         }
 
         .pack-card {
-            border-radius: 12px;
-            padding: 20px;
+            border-radius: 16px;
+            padding: 25px 20px;
             text-align: center;
-            transition: transform 0.2s, box-shadow 0.2s;
+            transition: transform 0.3s, box-shadow 0.3s;
             display: flex;
             flex-direction: column;
+            align-items: center;
             justify-content: space-between;
-            box-shadow: 0 8px 16px rgba(0,0,0,0.4);
             color: #fff;
             position: relative;
             overflow: hidden;
+            cursor: pointer;
+        }
+
+        /* Efekt wizualny saszetki (foil wrapper look) */
+        .pack-visual {
+            width: 110px;
+            height: 150px;
+            border-radius: 8px;
+            margin: 15px 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.5), inset 0 0 15px rgba(255,255,255,0.2);
+            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+            font-weight: bold;
+            border: 2px solid rgba(255,255,255,0.3);
+            transition: transform 0.3s;
+        }
+
+        .pack-card:hover .pack-visual {
+            transform: scale(1.05) rotate(2deg);
         }
 
         .pack-card.rare-pack {
-            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 50%, #1e3a8a 100%);
+            background: linear-gradient(135deg, rgba(30,58,138,0.8), rgba(15,23,42,0.9));
             border: 2px solid var(--rare);
+        }
+        .rare-pack .pack-visual {
+            background: linear-gradient(135deg, #1e40af, #3b82f6, #1d4ed8);
         }
 
         .pack-card.epic-pack {
-            background: linear-gradient(135deg, #581c87 0%, #a855f7 50%, #581c87 100%);
+            background: linear-gradient(135deg, rgba(88,28,135,0.8), rgba(15,23,42,0.9));
             border: 2px solid var(--epic);
+        }
+        .epic-pack .pack-visual {
+            background: linear-gradient(135deg, #6b21a8, #a855f7, #581c87);
         }
 
         .pack-card.mythic-pack {
-            background: linear-gradient(135deg, #7f1d1d 0%, #ef4444 50%, #7f1d1d 100%);
+            background: linear-gradient(135deg, rgba(127,29,29,0.8), rgba(15,23,42,0.9));
             border: 2px solid var(--mythic);
+        }
+        .mythic-pack .pack-visual {
+            background: linear-gradient(135deg, #991b1b, #ef4444, #7f1d1d);
         }
 
         .pack-card.legendary-pack {
-            background: linear-gradient(135deg, #713f12 0%, #eab308 50%, #713f12 100%);
+            background: linear-gradient(135deg, rgba(113,63,18,0.8), rgba(15,23,42,0.9));
             border: 2px solid var(--legendary);
-            box-shadow: 0 0 20px rgba(234, 179, 8, 0.5);
+            box-shadow: 0 0 25px rgba(234, 179, 8, 0.3);
+        }
+        .legendary-pack .pack-visual {
+            background: linear-gradient(135deg, #854d0e, #eab308, #ca8a04);
+            box-shadow: 0 0 15px rgba(234,179,8,0.6), inset 0 0 15px rgba(255,255,255,0.4);
         }
 
         .pack-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 12px 25px rgba(0,0,0,0.6);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.7);
         }
 
         .btn {
@@ -219,7 +255,7 @@
             cursor: pointer;
             font-weight: bold;
             transition: background 0.2s;
-            margin-top: 15px;
+            margin-top: 10px;
             box-shadow: 0 4px 6px rgba(0,0,0,0.3);
         }
 
@@ -522,16 +558,16 @@
             background: rgba(26, 28, 41, 0.95) !important;
         }
 
-        /* Modal */
+        /* NOWY MODAL OTWIERANIA PACZEK (WYSUWANE KARTY JAK W REALU) */
         #modal {
             display: none;
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.85);
+            background: rgba(0,0,0,0.9);
             justify-content: center;
             align-items: center;
             z-index: 1000;
-            backdrop-filter: blur(5px);
+            backdrop-filter: blur(8px);
         }
 
         .modal-content {
@@ -543,16 +579,41 @@
             width: 90%;
             border: 2px solid var(--accent);
             box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
-        .pulled-cards {
+        .pack-opening-area {
+            position: relative;
+            width: 180px;
+            height: 250px;
+            margin: 20px auto;
             display: flex;
-            flex-wrap: wrap;
             justify-content: center;
-            gap: 15px;
-            margin: 20px 0;
-            max-height: 400px;
-            overflow-y: auto;
+            align-items: center;
+        }
+
+        /* Animacja wysuwania karty z paczki */
+        @keyframes slideOutCard {
+            0% {
+                transform: translateY(40px) scale(0.8);
+                opacity: 0;
+            }
+            100% {
+                transform: translateY(0) scale(1);
+                opacity: 1;
+            }
+        }
+
+        .opening-card-container {
+            animation: slideOutCard 0.5s ease-out forwards;
+        }
+
+        .pack-counter {
+            font-size: 14px;
+            color: #aaa;
+            margin-bottom: 10px;
         }
     </style>
 </head>
@@ -632,12 +693,14 @@
         </div>
     </main>
 
-    <!-- MODAL WYNIKU -->
+    <!-- MODAL OTWIERANIA PACZEK (JEDNA KARTA PO DRUGIEJ) -->
     <div id="modal">
         <div class="modal-content">
-            <h3 id="modal-title">Zawartość:</h3>
-            <div class="pulled-cards" id="pulled-cards-container"></div>
-            <button class="btn" onclick="closeModal()">Super!</button>
+            <h3 id="modal-title">Otwieranie paczki...</h3>
+            <div class="pack-counter" id="pack-counter-text">Karta 1 z X</div>
+            <div class="pack-opening-area" id="pack-opening-area"></div>
+            <button class="btn" id="next-card-btn" onclick="nextOpenedCard()" style="display: none; width: 100%;">Następna karta</button>
+            <button class="btn" id="finish-pack-btn" onclick="closeModal()" style="display: none; width: 100%;">Super! (Odbierz)</button>
         </div>
     </div>
 
@@ -658,10 +721,10 @@
         ];
 
         const packs = [
-            { id: 'rare', name: 'Rzadka Paczka', price: 30, cardsCount: 2, class: 'rare-pack' },
-            { id: 'epic', name: 'Epicka Paczka', price: 80, cardsCount: 3, class: 'epic-pack' },
-            { id: 'mythic', name: 'Mityczna Paczka', price: 150, cardsCount: 3, class: 'mythic-pack' },
-            { id: 'legendary', name: 'Legendarna Paczka', price: 300, cardsCount: 4, class: 'legendary-pack' }
+            { id: 'rare', name: 'Rzadka Paczka', price: 30, cardsCount: 2, class: 'rare-pack', subtitle: 'Pakiet startowy' },
+            { id: 'epic', name: 'Epicka Paczka', price: 80, cardsCount: 3, class: 'epic-pack', subtitle: 'Lepsze szanse' },
+            { id: 'mythic', name: 'Mityczna Paczka', price: 150, cardsCount: 3, class: 'mythic-pack', subtitle: 'Mocne postacie' },
+            { id: 'legendary', name: 'Legendarna Paczka', price: 300, cardsCount: 4, class: 'legendary-pack', subtitle: 'Najlepsze karty' }
         ];
 
         let currentUser = null;
@@ -671,6 +734,10 @@
         let lastDailyClaim = 0;
         let selectedSpinCount = 1;
         let usedCodes = [];
+
+        // Zmienne obsługujące sekwencyjne otwieranie paczki
+        let currentOpenedCardsList = [];
+        let currentCardIndex = 0;
 
         allCards.forEach(card => { inventory[card.id] = 0; });
 
@@ -806,11 +873,16 @@
                 div.innerHTML = `
                     <div>
                         <h3>${pack.name}</h3>
-                        <p>Zawiera ${pack.cardsCount} losowe karty.</p>
+                        <p style="font-size:12px; color:#aaa; margin-top:0;">${pack.subtitle}</p>
+                    </div>
+                    <div class="pack-visual">
+                        <span style="font-size: 24px;">📦</span>
+                        <span style="font-size: 11px; margin-top: 5px;">MARVEL</span>
                     </div>
                     <div>
+                        <p>Zawiera ${pack.cardsCount} karty</p>
                         <p><strong>Cena: ${pack.price} $</strong></p>
-                        <button class="btn" onclick="buyPack('${pack.id}')" ${money < pack.price ? 'disabled' : ''}>Kup</button>
+                        <button class="btn" onclick="buyPack('${pack.id}')" ${money < pack.price ? 'disabled' : ''}>Kup paczkę</button>
                     </div>
                 `;
                 container.appendChild(div);
@@ -899,7 +971,6 @@
             inventory[cardId]--;
             money += card.value;
             
-            // Usunięcie z decku jeśli brak w eq
             activeDeck = activeDeck.map(id => id === cardId && inventory[cardId] < activeDeck.filter(x => x === cardId).length ? null : id);
             
             updateUI();
@@ -910,65 +981,62 @@
             if (money < pack.price) return;
             money -= pack.price;
 
-            let pulled = [];
+            currentOpenedCardsList = [];
             for (let i = 0; i < pack.cardsCount; i++) {
                 const randomCard = allCards[Math.floor(Math.random() * allCards.length)];
                 inventory[randomCard.id]++;
-                pulled.push(randomCard);
+                currentOpenedCardsList.push(randomCard);
             }
 
-            showModal("Otwarto paczkę!", pulled);
+            currentCardIndex = 0;
+            openPackModalSequence();
             updateUI();
         }
 
-        function showModal(title, cards) {
-            document.getElementById('modal-title').innerText = title;
-            const container = document.getElementById('pulled-cards-container');
-            container.innerHTML = '';
-            cards.forEach(card => {
-                const div = document.createElement('div');
-                div.className = `card ${card.rarity}`;
-                div.innerHTML = `
-                    <div class="card-avatar">${card.icon}</div>
-                    <div class="card-rarity">${card.rarity}</div>
-                    <div class="card-name">${card.name}</div>
-                    <div class="card-value">Wartość: ${card.value} $</div>
-                `;
-                container.appendChild(div);
-            });
+        function openPackModalSequence() {
             document.getElementById('modal').style.display = 'flex';
+            document.getElementById('modal-title').innerText = "Otwieranie paczki...";
+            showCardInSequence();
+        }
+
+        function showCardInSequence() {
+            const container = document.getElementById('pack-opening-area');
+            const counterText = document.getElementById('pack-counter-text');
+            const nextBtn = document.getElementById('next-card-btn');
+            const finishBtn = document.getElementById('finish-pack-btn');
+
+            container.innerHTML = '';
+            counterText.innerText = `Karta ${currentCardIndex + 1} z ${currentOpenedCardsList.length}`;
+
+            const card = currentOpenedCardsList[currentCardIndex];
+            const div = document.createElement('div');
+            div.className = `card ${card.rarity} opening-card-container`;
+            div.innerHTML = `
+                <div class="card-avatar">${card.icon}</div>
+                <div class="card-rarity">${card.rarity}</div>
+                <div class="card-name">${card.name}</div>
+                <div class="card-value">Wartość: ${card.value} $</div>
+                <div class="card-count" style="visibility:hidden;">-</div>
+            `;
+            container.appendChild(div);
+
+            if (currentCardIndex < currentOpenedCardsList.length - 1) {
+                nextBtn.style.display = 'block';
+                finishBtn.style.display = 'none';
+            } else {
+                nextBtn.style.display = 'none';
+                finishBtn.style.display = 'block';
+                document.getElementById('modal-title').innerText = "Gratulacje! Zawartość paczki:";
+            }
+        }
+
+        function nextOpenedCard() {
+            currentCardIndex++;
+            showCardInSequence();
         }
 
         function closeModal() {
             document.getElementById('modal').style.display = 'none';
-        }
-
-        function setSpinCount(count) {
-            selectedSpinCount = count;
-            document.querySelectorAll('.spin-btn-option').forEach(btn => btn.classList.remove('selected'));
-            document.getElementById(`spin-count-${count}`).classList.add('selected');
-        }
-
-        function spinWheel() {
-            const cost = selectedSpinCount * 35;
-            if (money < cost) {
-                alert("Nie masz wystarczająco pieniędzy!");
-                return;
-            }
-            money -= cost;
-            updateUI();
-            
-            let pulled = [];
-            for(let i=0; i<selectedSpinCount; i++) {
-                const randomCard = allCards[Math.floor(Math.random() * allCards.length)];
-                inventory[randomCard.id]++;
-                pulled.push(randomCard);
-            }
-            showModal("Wynik kręcenia kołem:", pulled);
-        }
-
-        function initRoulettes() {
-            // Funkcja pomocnicza inicjalizująca interfejs koła
         }
     </script>
 </body>
