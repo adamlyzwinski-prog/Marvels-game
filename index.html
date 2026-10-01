@@ -265,12 +265,12 @@
         }
         .btn-daily:hover { background: #059669; }
 
-        .codes-container {
+        .codes-container, .battle-container {
             background: rgba(31, 40, 51, 0.9);
             padding: 30px;
             border-radius: 15px;
             border: 2px solid #3a4750;
-            max-width: 500px;
+            max-width: 600px;
             margin: 0 auto;
             text-align: center;
             box-shadow: 0 10px 25px rgba(0,0,0,0.5);
@@ -428,7 +428,7 @@
 
         .deck-slot {
             width: 140px;
-            height: 200px;
+            height: 210px;
             background: rgba(31, 40, 51, 0.6);
             border: 2px dashed #555;
             border-radius: 12px;
@@ -540,6 +540,11 @@
             background: rgba(26, 28, 41, 0.95) !important;
         }
 
+        .card.exhausted {
+            filter: sepia(1) hue-rotate(300deg) brightness(0.6);
+            border-color: #ef4444 !important;
+        }
+
         /* MODAL ANIMACJI PACZKI NA CAŁYM EKRANIE */
         #modal {
             display: none;
@@ -577,7 +582,6 @@
             perspective: 1000px;
         }
 
-        /* Styl zamkniętej paczki do kliknięcia */
         .closed-pack {
             width: 150px;
             height: 220px;
@@ -600,7 +604,6 @@
             transform: scale(1.08);
         }
 
-        /* Efekt wybuchu/otwarcia paczki */
         @keyframes packBurst {
             0% { transform: scale(1); opacity: 1; filter: brightness(1); }
             50% { transform: scale(1.4); opacity: 0.8; filter: brightness(2); }
@@ -617,7 +620,6 @@
             100% { transform: scale(1) rotate(2deg); }
         }
 
-        /* Animacja wysuwania karty */
         @keyframes slideOutCard {
             0% {
                 transform: translateY(60px) scale(0.6);
@@ -666,6 +668,7 @@
         <button class="tab-btn" onclick="switchTab('wheel')">Koło Fortuny</button>
         <button class="tab-btn" onclick="switchTab('codes')">Kody</button>
         <button class="tab-btn" onclick="switchTab('deck')">Deck</button>
+        <button class="tab-btn" onclick="switchTab('battle')">Arena Walk</button>
         <button class="tab-btn" onclick="switchTab('index-tab')">Indeks</button>
     </nav>
 
@@ -708,10 +711,22 @@
             <div class="deck-slots" id="deck-slots-container"></div>
         </div>
 
+        <!-- ARENA WALK -->
+        <div id="battle" class="tab-content">
+            <h2>Arena Walk Marvela</h2>
+            <div class="battle-container">
+                <p>Wyślij swój deck do walki z armią złoczyńców!</p>
+                <p style="font-size: 13px; color: #aaa;">Po walce karty zostaną ranne i będą potrzebowały uleczenia.</p>
+                <div id="battle-status" style="margin: 20px 0; font-weight: bold; font-size: 16px;"></div>
+                <button class="btn" id="start-battle-btn" onclick="startBattle()">Rozpocznij walkę!</button>
+                <button class="btn" style="background: #10b981; margin-left: 10px;" onclick="healAllCards()">Ulecz wszystkie karty (50 $)</button>
+            </div>
+        </div>
+
         <!-- INDEKS -->
         <div id="index-tab" class="tab-content">
             <h2>Indeks Wszystkich Kart Marvela</h2>
-            <p>Możesz tutaj dodawać karty do Decku lub je sprzedawać za gotówkę.</p>
+            <p>Możesz tutaj dodawać karty do Decku, sprzedawać je lub leczyć osobno.</p>
             <div class="collection-grid" id="collection-grid"></div>
         </div>
     </main>
@@ -729,18 +744,18 @@
 
     <script>
         const allCards = [
-            { id: 'r1', name: 'Iron Man', rarity: 'rare', value: 10, icon: '🤖' },
-            { id: 'r2', name: 'Captain America', rarity: 'rare', value: 10, icon: '🛡️' },
-            { id: 'r3', name: 'Thor', rarity: 'rare', value: 10, icon: '⚡' },
-            { id: 'r4', name: 'Hulk', rarity: 'rare', value: 10, icon: '🟩' },
-            { id: 'r5', name: 'Black Widow', rarity: 'rare', value: 10, icon: '🕷️' },
-            { id: 'e1', name: 'Spider-Man', rarity: 'epic', value: 30, icon: '🕸' },
-            { id: 'e2', name: 'Doctor Strange', rarity: 'epic', value: 30, icon: '🔮' },
-            { id: 'e3', name: 'Scarlet Witch', rarity: 'epic', value: 30, icon: '🔴' },
-            { id: 'm1', name: 'Thanos', rarity: 'mythic', value: 50, icon: '🧤' },
-            { id: 'm2', name: 'Silver Surfer', rarity: 'mythic', value: 50, icon: '🏄‍♂️' },
-            { id: 'l1', name: 'Stan Lee', rarity: 'legendary', value: 100, icon: '🕶' },
-            { id: 'l2', name: 'Galactus', rarity: 'legendary', value: 100, icon: '🪐' }
+            { id: 'r1', name: 'Iron Man', rarity: 'rare', value: 10, power: 15, icon: '🤖' },
+            { id: 'r2', name: 'Captain America', rarity: 'rare', value: 10, power: 14, icon: '🛡️' },
+            { id: 'r3', name: 'Thor', rarity: 'rare', value: 10, power: 18, icon: '⚡' },
+            { id: 'r4', name: 'Hulk', rarity: 'rare', value: 10, power: 20, icon: '🟩' },
+            { id: 'r5', name: 'Black Widow', rarity: 'rare', value: 10, power: 12, icon: '🕷️' },
+            { id: 'e1', name: 'Spider-Man', rarity: 'epic', value: 30, power: 35, icon: '🕸' },
+            { id: 'e2', name: 'Doctor Strange', rarity: 'epic', value: 30, power: 40, icon: '🔮' },
+            { id: 'e3', name: 'Scarlet Witch', rarity: 'epic', value: 30, power: 42, icon: '🔴' },
+            { id: 'm1', name: 'Thanos', rarity: 'mythic', value: 50, power: 65, icon: '🧤' },
+            { id: 'm2', name: 'Silver Surfer', rarity: 'mythic', value: 50, power: 60, icon: '🏄‍♂️' },
+            { id: 'l1', name: 'Stan Lee', rarity: 'legendary', value: 100, power: 100, icon: '🕶' },
+            { id: 'l2', name: 'Galactus', rarity: 'legendary', value: 100, power: 95, icon: '🪐' }
         ];
 
         const packs = [
@@ -753,6 +768,7 @@
         let currentUser = null;
         let money = 350;
         let inventory = {}; 
+        let cardExhausted = {}; // True, jeśli karta jest ranna po walce
         let activeDeck = [null, null, null, null, null];
         let lastDailyClaim = 0;
         let selectedSpinCount = 1;
@@ -762,7 +778,10 @@
         let currentCardIndex = 0;
         let activePackConfig = null;
 
-        allCards.forEach(card => { inventory[card.id] = 0; });
+        allCards.forEach(card => { 
+            inventory[card.id] = 0; 
+            cardExhausted[card.id] = false;
+        });
 
         function switchTab(tabId) {
             document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
@@ -793,6 +812,7 @@
                 const data = usersDb[username];
                 money = data.money;
                 inventory = data.inventory;
+                cardExhausted = data.cardExhausted || {};
                 activeDeck = data.activeDeck;
                 lastDailyClaim = data.lastDailyClaim || 0;
                 usedCodes = data.usedCodes || [];
@@ -801,13 +821,17 @@
                     password: password,
                     money: 350,
                     inventory: { ...inventory },
+                    cardExhausted: { ...cardExhausted },
                     activeDeck: [null, null, null, null, null],
                     lastDailyClaim: 0,
                     usedCodes: []
                 };
                 localStorage.setItem('marvel_users_db', JSON.stringify(usersDb));
                 money = 350;
-                allCards.forEach(card => { inventory[card.id] = 0; });
+                allCards.forEach(card => { 
+                    inventory[card.id] = 0; 
+                    cardExhausted[card.id] = false;
+                });
                 activeDeck = [null, null, null, null, null];
                 lastDailyClaim = 0;
                 usedCodes = [];
@@ -828,6 +852,7 @@
                 password: usersDb[currentUser].password,
                 money: money,
                 inventory: inventory,
+                cardExhausted: cardExhausted,
                 activeDeck: activeDeck,
                 lastDailyClaim: lastDailyClaim,
                 usedCodes: usedCodes
@@ -921,22 +946,25 @@
             allCards.forEach(card => {
                 const count = inventory[card.id];
                 const isLocked = count === 0;
+                const isExhausted = cardExhausted[card.id];
                 const div = document.createElement('div');
-                div.className = `card ${card.rarity} ${isLocked ? 'locked' : ''}`;
+                div.className = `card ${card.rarity} ${isLocked ? 'locked' : ''} ${isExhausted ? 'exhausted' : ''}`;
                 
                 let htmlContent = `
                     <div class="card-avatar">${isLocked ? '❓' : card.icon}</div>
                     <div class="card-rarity">${card.rarity}</div>
                     <div class="card-name">${isLocked ? '???' : card.name}</div>
-                    <div class="card-value">Wartość: ${card.value} $</div>
+                    <div class="card-value">Siła: ${card.power} | Wartość: ${card.value} $</div>
                     <div class="card-count">Posiadasz: ${count}</div>
                 `;
 
                 if (!isLocked) {
-                    htmlContent += `
-                        <button class="btn" style="padding:4px 8px; font-size:11px; margin-top:4px;" onclick="assignToDeck('${card.id}')">Do Decku</button>
-                        <button class="btn btn-sell" onclick="sellCard('${card.id}')">Sprzedaj</button>
-                    `;
+                    if (isExhausted) {
+                        htmlContent += `<div style="font-size: 9px; color: #ef4444; font-weight: bold; margin-top: 5px;">RZANNY (Wymaga leczenia)</div>`;
+                    } else {
+                        htmlContent += `<button class="btn" style="padding:4px 8px; font-size:11px; margin-top:5px;" onclick="addToDeck('${card.id}')">Do Decku</button>`;
+                    }
+                    htmlContent += `<button class="btn btn-sell" onclick="sellCard('${card.id}')">Sprzedaj (${card.value} $)</button>`;
                 }
 
                 div.innerHTML = htmlContent;
@@ -949,39 +977,37 @@
             container.innerHTML = '';
             activeDeck.forEach((cardId, index) => {
                 const slot = document.createElement('div');
+                slot.className = `deck-slot ${cardId ? 'filled' : ''}`;
+
                 if (cardId) {
                     const card = allCards.find(c => c.id === cardId);
-                    slot.className = `deck-slot filled card ${card.rarity}`;
+                    const isExhausted = cardExhausted[card.id];
+                    slot.className += ` ${card.rarity} ${isExhausted ? 'exhausted' : ''}`;
                     slot.innerHTML = `
                         <div class="card-avatar">${card.icon}</div>
                         <div class="card-rarity">${card.rarity}</div>
                         <div class="card-name">${card.name}</div>
-                        <div class="card-value">${card.value} $</div>
-                        <button class="btn" style="padding:4px 8px; font-size:10px; margin-top:4px;" onclick="removeFromDeck(${index})">Usuń</button>
+                        <div class="card-value">Siła: ${card.power}</div>
+                        ${isExhausted ? '<div style="font-size:9px; color:#ef4444; font-weight:bold;">Ranny!</div>' : ''}
+                        <button class="btn" style="padding:2px 6px; font-size:10px; margin-top:5px;" onclick="removeFromDeck(${index})">Usuń</button>
                     `;
                 } else {
-                    slot.className = 'deck-slot';
-                    slot.innerHTML = `<span style="color:#777;">Slot ${index + 1}<br>Pusty</span>`;
+                    slot.innerHTML = `<span style="color: #777; font-size: 13px;">Wolny slot<br>(${index + 1})</span>`;
                 }
                 container.appendChild(slot);
             });
         }
 
-        function assignToDeck(cardId) {
-            const countInDeck = activeDeck.filter(id => id === cardId).length;
-            const totalOwned = inventory[cardId];
-
-            if (countInDeck >= totalOwned) {
-                alert("Nie masz więcej wolnych sztuk tej karty w ekwipunku!");
+        function addToDeck(cardId) {
+            if (activeDeck.includes(cardId)) {
+                alert("Ta karta jest już w Twoim decku!");
                 return;
             }
-
             const emptyIndex = activeDeck.indexOf(null);
             if (emptyIndex === -1) {
-                alert("Deck jest pełny! (Max 5 kart)");
+                alert("Twój deck jest pełny (maksymalnie 5 kart)!");
                 return;
             }
-
             activeDeck[emptyIndex] = cardId;
             updateUI();
         }
@@ -992,17 +1018,177 @@
         }
 
         function sellCard(cardId) {
-            if (inventory[cardId] <= 0) return;
             const card = allCards.find(c => c.id === cardId);
+            if (!card || inventory[cardId] <= 0) return;
+
             inventory[cardId]--;
             money += card.value;
-            
-            activeDeck = activeDeck.map(id => id === cardId && inventory[cardId] < activeDeck.filter(x => x === cardId).length ? null : id);
-            
             updateUI();
         }
 
-        // KOŁO FORTUNY - LOGIKA I ANIMACJA
+        function startBattle() {
+            // Sprawdź czy deck ma chociaż jedną kartę
+            const filledSlots = activeDeck.filter(id => id !== null);
+            if (filledSlots.length === 0) {
+                alert("Twój deck jest pusty! Dodaj karty z indeksu przed rozpoczęciem walki.");
+                return;
+            }
+
+            // Sprawdź czy karty w decku są ranne
+            const exhaustedCardsInDeck = filledSlots.filter(id => cardExhausted[id]);
+            if (exhaustedCardsInDeck.length > 0) {
+                alert("Niektóre karty w Twoim decku są ranne po poprzedniej walce! Musisz je uleczyć, zanim znowu wyruszą do boju.");
+                return;
+            }
+
+            // Oblicz całkowitą siłę decku
+            let totalPower = 0;
+            filledSlots.forEach(id => {
+                const card = allCards.find(c => c.id === id);
+                totalPower += card.power;
+            });
+
+            // Losowa siła wroga bazująca na liczbie kart w decku
+            const enemyPower = Math.floor(Math.random() * (filledSlots.length * 25)) + (filledSlots.length * 10);
+            
+            const statusDiv = document.getElementById('battle-status');
+
+            if (totalPower >= enemyPower) {
+                const reward = filledSlots.length * 25;
+                money += reward;
+                statusDiv.innerHTML = `<span style="color: #10b981;">Zwycięstwo! Twoja siła (${totalPower}) pokonała wroga (${enemyPower}). Otrzymujesz nagrodę: +${reward} $!</span>`;
+            } else {
+                statusDiv.innerHTML = `<span style="color: #ef4444;">Porażka! Wróg był silniejszy (Siła wroga: ${enemyPower}, Twoja siła: ${totalPower}).</span>`;
+            }
+
+            // Oznacz karty w decku jako ranne (exhausted)
+            filledSlots.forEach(id => {
+                cardExhausted[id] = true;
+            });
+
+            updateUI();
+        }
+
+        function healAllCards() {
+            const healCost = 50;
+            if (money < healCost) {
+                alert("Potrzebujesz 50 $, aby uleczyć karty!");
+                return;
+            }
+
+            money -= healCost;
+            Object.keys(cardExhausted).forEach(id => {
+                cardExhausted[id] = false;
+            });
+
+            alert("Wszystkie karty zostały w pełni uleczone i są gotowe do walki!");
+            updateUI();
+        }
+
+        // --- OBSŁUGA SKLEPU I PACZEK ---
+        function buyPack(packId) {
+            const pack = packs.find(p => p.id === packId);
+            if (money < pack.price) return;
+
+            money -= pack.price;
+            activePackConfig = pack;
+            
+            currentOpenedCardsList = [];
+            for (let i = 0; i < pack.cardsCount; i++) {
+                currentOpenedCardsList.push(getRandomCardForPack(pack.id));
+            }
+            currentCardIndex = 0;
+
+            openModalForPack();
+            updateUI();
+        }
+
+        function getRandomCardForPack(packType) {
+            let available = allCards;
+            if (packType === 'rare') available = allCards.filter(c => c.rarity === 'rare' || c.rarity === 'epic');
+            if (packType === 'epic') available = allCards.filter(c => c.rarity === 'epic' || c.rarity === 'mythic');
+            if (packType === 'mythic') available = allCards.filter(c => c.rarity === 'mythic' || c.rarity === 'legendary');
+            if (packType === 'legendary') available = allCards.filter(c => c.rarity === 'legendary' || c.rarity === 'mythic');
+
+            const randomIndex = Math.floor(Math.random() * available.length);
+            return available[randomIndex];
+        }
+
+        function openModalForPack() {
+            const modal = document.getElementById('modal');
+            const title = document.getElementById('modal-title');
+            const area = document.getElementById('pack-opening-area');
+            const counter = document.getElementById('pack-counter-text');
+            const nextBtn = document.getElementById('next-card-btn');
+            const finishBtn = document.getElementById('finish-pack-btn');
+
+            modal.style.display = 'flex';
+            title.innerText = activePackConfig.name;
+            counter.style.display = 'none';
+            nextBtn.style.display = 'none';
+            finishBtn.style.display = 'none';
+
+            area.innerHTML = `
+                <div class="closed-pack ${activePackConfig.class}" onclick="triggerPackBurst()">
+                    <span style="font-size: 35px;">📦</span>
+                    <span style="margin-top: 10px; font-size: 14px;">KLIKNIJ, ABY OTWORZYĆ</span>
+                </div>
+            `;
+        }
+
+        function triggerPackBurst() {
+            const area = document.getElementById('pack-opening-area');
+            const closedPack = area.querySelector('.closed-pack');
+            if (!closedPack) return;
+
+            closedPack.classList.add('burst-animation');
+            setTimeout(() => {
+                showCurrentOpenedCard();
+            }, 350);
+        }
+
+        function showCurrentOpenedCard() {
+            const area = document.getElementById('pack-opening-area');
+            const counter = document.getElementById('pack-counter-text');
+            const nextBtn = document.getElementById('next-card-btn');
+            const finishBtn = document.getElementById('finish-pack-btn');
+
+            counter.style.display = 'block';
+            counter.innerText = `Karta ${currentCardIndex + 1} z ${currentOpenedCardsList.length}`;
+
+            const card = currentOpenedCardsList[currentCardIndex];
+            inventory[card.id]++;
+            saveUserData();
+
+            area.innerHTML = `
+                <div class="card ${card.rarity} opening-card-container">
+                    <div class="card-avatar">${card.icon}</div>
+                    <div class="card-rarity">${card.rarity}</div>
+                    <div class="card-name">${card.name}</div>
+                    <div class="card-value">Siła: ${card.power} | Wartość: ${card.value} $</div>
+                    <div class="card-count">Posiadasz: ${inventory[card.id]}</div>
+                </div>
+            `;
+
+            if (currentCardIndex < currentOpenedCardsList.length - 1) {
+                nextBtn.style.display = 'block';
+            } else {
+                finishBtn.style.display = 'block';
+            }
+        }
+
+        function nextOpenedCard() {
+            currentCardIndex++;
+            document.getElementById('next-card-btn').style.display = 'none';
+            showCurrentOpenedCard();
+        }
+
+        function closeModal() {
+            document.getElementById('modal').style.display = 'none';
+            updateUI();
+        }
+
+        // --- KOŁO FORTUNY ---
         function setSpinCount(count) {
             selectedSpinCount = count;
             document.querySelectorAll('.spin-btn-option').forEach(btn => btn.classList.remove('selected'));
@@ -1021,23 +1207,23 @@
                     <div class="roulette-track" id="track-${i}"></div>
                 `;
                 box.appendChild(wrapper);
-                fillTrack(`track-${i}`, 30);
+                fillTrack(`track-${i}`);
             }
         }
 
-        function fillTrack(trackId, itemsCount) {
+        function fillTrack(trackId) {
             const track = document.getElementById(trackId);
             track.innerHTML = '';
-            for (let i = 0; i < itemsCount; i++) {
+            for (let i = 0; i < 35; i++) {
                 const randomCard = allCards[Math.floor(Math.random() * allCards.length)];
-                const div = document.createElement('div');
-                div.className = `wheel-card ${randomCard.rarity}`;
-                div.innerHTML = `
+                const cardDiv = document.createElement('div');
+                cardDiv.className = `wheel-card ${randomCard.rarity}`;
+                cardDiv.innerHTML = `
                     <div class="card-avatar">${randomCard.icon}</div>
                     <div class="card-name">${randomCard.name}</div>
                     <div class="card-rarity">${randomCard.rarity}</div>
                 `;
-                track.appendChild(div);
+                track.appendChild(cardDiv);
             }
         }
 
@@ -1047,129 +1233,51 @@
                 alert("Nie masz wystarczająco dużo pieniędzy!");
                 return;
             }
+
             money -= cost;
             updateUI();
 
-            document.getElementById('spin-btn').disabled = true;
+            const spinBtn = document.getElementById('spin-btn');
+            spinBtn.disabled = true;
 
-            let finishedSpins = 0;
-            const wonCards = [];
+            let finishedCount = 0;
 
             for (let i = 0; i < selectedSpinCount; i++) {
                 const track = document.getElementById(`track-${i}`);
-                const wonCard = allCards[Math.floor(Math.random() * allCards.length)];
-                wonCards.push(wonCard);
+                
+                // Losowanie wygranej karty
+                const winningCard = allCards[Math.floor(Math.random() * allCards.length)];
+                
+                // Podmień element w okolicach środka (np. na pozycji 25)
+                const cardElements = track.children;
+                const targetEl = cardElements[25];
+                targetEl.className = `wheel-card ${winningCard.rarity}`;
+                targetEl.innerHTML = `
+                    <div class="card-avatar">${winningCard.icon}</div>
+                    <div class="card-name">${winningCard.name}</div>
+                    <div class="card-rarity">${winningCard.rarity}</div>
+                `;
 
-                // Podmień wybraną pozycję na taśmie (np. 20 element) na wygraną kartę
-                const cardDivs = track.children;
-                if (cardDivs[20]) {
-                    cardDivs[20].className = `wheel-card ${wonCard.rarity}`;
-                    cardDivs[20].innerHTML = `
-                        <div class="card-avatar">${wonCard.icon}</div>
-                        <div class="card-name">${wonCard.name}</div>
-                        <div class="card-rarity">${wonCard.rarity}</div>
-                    `;
-                }
+                // Dodaj wygraną do ekwipunku
+                inventory[winningCard.id]++;
 
-                // Oblicz offset, aby taśma zatrzymała się idealnie na 20. elemencie pod wskaźnikiem
-                const itemWidth = 78; // 70px szerokość + 8px gap
-                const targetOffset = -(20 * itemWidth) + (document.querySelector('.roulette-wrapper').clientWidth / 2) - (itemWidth / 2) + (Math.random() * 20 - 10);
+                // Oblicz przesunięcie (szerokość karty to 70px + 8px gap = 78px)
+                const itemWidth = 78;
+                const centerOffset = (track.parentElement.clientWidth / 2) - (itemWidth / 2);
+                const randomExtra = (Math.random() * 40) - 20; // małe losowe odchylenie
+                const targetPosition = - (25 * itemWidth) + centerOffset + randomExtra;
 
-                track.style.transition = 'transform 3.5s cubic-bezier(0.15, 0.85, 0.35, 1)';
-                track.style.transform = `translateX(${targetOffset}px)`;
+                track.style.transition = 'transform 3.5s cubic-bezier(0.15, 0.9, 0.2, 1)';
+                track.style.transform = `translateX(${targetPosition}px)`;
 
                 setTimeout(() => {
-                    inventory[wonCard.id]++;
-                    finishedSpins++;
-                    if (finishedSpins === selectedSpinCount) {
-                        document.getElementById('spin-btn').disabled = false;
+                    finishedCount++;
+                    if (finishedCount === selectedSpinCount) {
+                        spinBtn.disabled = false;
                         updateUI();
                     }
                 }, 3500);
             }
-        }
-
-        // ZAKUP I ANIMACJA OTWIERANIA PACZKI
-        function buyPack(packId) {
-            const pack = packs.find(p => p.id === packId);
-            if (money < pack.price) return;
-            money -= pack.price;
-
-            activePackConfig = pack;
-            currentOpenedCardsList = [];
-            for (let i = 0; i < pack.cardsCount; i++) {
-                const randomCard = allCards[Math.floor(Math.random() * allCards.length)];
-                inventory[randomCard.id]++;
-                currentOpenedCardsList.push(randomCard);
-            }
-
-            document.getElementById('modal').style.display = 'flex';
-            document.getElementById('modal-title').innerText = `Otwórz paczkę: ${pack.name}`;
-            document.getElementById('pack-counter-text').style.display = 'none';
-            document.getElementById('next-card-btn').style.display = 'none';
-            document.getElementById('finish-pack-btn').style.display = 'none';
-
-            const area = document.getElementById('pack-opening-area');
-            area.innerHTML = `
-                <div class="closed-pack ${pack.class}" id="pack-box-element" onclick="triggerPackBurst()">
-                    <span style="font-size: 36px;">📦</span>
-                    <span style="margin-top: 10px; font-size: 14px;">Kliknij, aby otworzyć!</span>
-                </div>
-            `;
-
-            updateUI();
-        }
-
-        function triggerPackBurst() {
-            const packBox = document.getElementById('pack-box-element');
-            packBox.classList.add('burst-animation');
-            
-            setTimeout(() => {
-                currentCardIndex = 0;
-                document.getElementById('pack-counter-text').style.display = 'block';
-                showCardInSequence();
-            }, 350);
-        }
-
-        function showCardInSequence() {
-            const container = document.getElementById('pack-opening-area');
-            const counterText = document.getElementById('pack-counter-text');
-            const nextBtn = document.getElementById('next-card-btn');
-            const finishBtn = document.getElementById('finish-pack-btn');
-
-            container.innerHTML = '';
-            counterText.innerText = `Karta ${currentCardIndex + 1} z ${currentOpenedCardsList.length}`;
-
-            const card = currentOpenedCardsList[currentCardIndex];
-            const div = document.createElement('div');
-            div.className = `card ${card.rarity} opening-card-container`;
-            div.innerHTML = `
-                <div class="card-avatar">${card.icon}</div>
-                <div class="card-rarity">${card.rarity}</div>
-                <div class="card-name">${card.name}</div>
-                <div class="card-value">Wartość: ${card.value} $</div>
-                <div class="card-count" style="visibility:hidden;">-</div>
-            `;
-            container.appendChild(div);
-
-            if (currentCardIndex < currentOpenedCardsList.length - 1) {
-                nextBtn.style.display = 'block';
-                finishBtn.style.display = 'none';
-                document.getElementById('modal-title').innerText = "Wysuwa się karta!";
-            } else {
-                nextBtn.style.display = 'none';
-                finishBtn.style.display = 'block';
-                document.getElementById('modal-title').innerText = "Gratulacje! Ostatnia karta:";
-            }
-        }
-
-        function nextOpenedCard() {
-            currentCardIndex++;
-            showCardInSequence();
-        }
-
-        function closeModal() {
-            document.getElementById('modal').style.display = 'none';
         }
     </script>
 </body>
