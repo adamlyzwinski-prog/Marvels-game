@@ -29,7 +29,6 @@
             min-height: 100vh;
         }
 
-        /* Ekran logowania */
         #auth-overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -594,6 +593,22 @@
             text-shadow: 0 2px 5px rgba(0,0,0,0.8);
             font-weight: bold;
             color: #fff;
+            transition: transform 0.3s;
+        }
+
+        .closed-pack:hover {
+            transform: scale(1.08);
+        }
+
+        /* Efekt wybuchu/otwarcia paczki */
+        @keyframes packBurst {
+            0% { transform: scale(1); opacity: 1; filter: brightness(1); }
+            50% { transform: scale(1.4); opacity: 0.8; filter: brightness(2); }
+            100% { transform: scale(0); opacity: 0; }
+        }
+
+        .burst-animation {
+            animation: packBurst 0.4s ease-out forwards;
         }
 
         @keyframes pulsePack {
@@ -701,7 +716,7 @@
         </div>
     </main>
 
-    <!-- MODAL OTWIERANIA PACZKI (PACZKA -> KLIK -> KARTY PO KOLEI) -->
+    <!-- MODAL OTWIERANIA PACZKI -->
     <div id="modal">
         <div class="modal-content">
             <h3 id="modal-title">Otwieranie paczki...</h3>
@@ -743,7 +758,6 @@
         let selectedSpinCount = 1;
         let usedCodes = [];
 
-        // Zmienne otwierania paczki
         let currentOpenedCardsList = [];
         let currentCardIndex = 0;
         let activePackConfig = null;
@@ -755,6 +769,9 @@
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
             document.getElementById(tabId).classList.add('active');
             event.target.classList.add('active');
+            if (tabId === 'wheel') {
+                initRoulettes(selectedSpinCount);
+            }
         }
 
         function handleLogin() {
@@ -801,6 +818,7 @@
             document.getElementById('auth-overlay').style.display = 'none';
             
             updateUI();
+            initRoulettes(1);
         }
 
         function saveUserData() {
@@ -984,7 +1002,94 @@
             updateUI();
         }
 
-        // KROK 1: Zakup paczki i wyświetlenie jej zamkniętej na ekranie
+        // KOŁO FORTUNY - LOGIKA I ANIMACJA
+        function setSpinCount(count) {
+            selectedSpinCount = count;
+            document.querySelectorAll('.spin-btn-option').forEach(btn => btn.classList.remove('selected'));
+            document.getElementById(`spin-count-${count}`).classList.add('selected');
+            initRoulettes(count);
+        }
+
+        function initRoulettes(count) {
+            const box = document.getElementById('roulettes-box');
+            box.innerHTML = '';
+            for (let i = 0; i < count; i++) {
+                const wrapper = document.createElement('div');
+                wrapper.className = 'roulette-wrapper';
+                wrapper.innerHTML = `
+                    <div class="roulette-pointer"></div>
+                    <div class="roulette-track" id="track-${i}"></div>
+                `;
+                box.appendChild(wrapper);
+                fillTrack(`track-${i}`, 30);
+            }
+        }
+
+        function fillTrack(trackId, itemsCount) {
+            const track = document.getElementById(trackId);
+            track.innerHTML = '';
+            for (let i = 0; i < itemsCount; i++) {
+                const randomCard = allCards[Math.floor(Math.random() * allCards.length)];
+                const div = document.createElement('div');
+                div.className = `wheel-card ${randomCard.rarity}`;
+                div.innerHTML = `
+                    <div class="card-avatar">${randomCard.icon}</div>
+                    <div class="card-name">${randomCard.name}</div>
+                    <div class="card-rarity">${randomCard.rarity}</div>
+                `;
+                track.appendChild(div);
+            }
+        }
+
+        function spinWheel() {
+            const cost = selectedSpinCount * 35;
+            if (money < cost) {
+                alert("Nie masz wystarczająco dużo pieniędzy!");
+                return;
+            }
+            money -= cost;
+            updateUI();
+
+            document.getElementById('spin-btn').disabled = true;
+
+            let finishedSpins = 0;
+            const wonCards = [];
+
+            for (let i = 0; i < selectedSpinCount; i++) {
+                const track = document.getElementById(`track-${i}`);
+                const wonCard = allCards[Math.floor(Math.random() * allCards.length)];
+                wonCards.push(wonCard);
+
+                // Podmień wybraną pozycję na taśmie (np. 20 element) na wygraną kartę
+                const cardDivs = track.children;
+                if (cardDivs[20]) {
+                    cardDivs[20].className = `wheel-card ${wonCard.rarity}`;
+                    cardDivs[20].innerHTML = `
+                        <div class="card-avatar">${wonCard.icon}</div>
+                        <div class="card-name">${wonCard.name}</div>
+                        <div class="card-rarity">${wonCard.rarity}</div>
+                    `;
+                }
+
+                // Oblicz offset, aby taśma zatrzymała się idealnie na 20. elemencie pod wskaźnikiem
+                const itemWidth = 78; // 70px szerokość + 8px gap
+                const targetOffset = -(20 * itemWidth) + (document.querySelector('.roulette-wrapper').clientWidth / 2) - (itemWidth / 2) + (Math.random() * 20 - 10);
+
+                track.style.transition = 'transform 3.5s cubic-bezier(0.15, 0.85, 0.35, 1)';
+                track.style.transform = `translateX(${targetOffset}px)`;
+
+                setTimeout(() => {
+                    inventory[wonCard.id]++;
+                    finishedSpins++;
+                    if (finishedSpins === selectedSpinCount) {
+                        document.getElementById('spin-btn').disabled = false;
+                        updateUI();
+                    }
+                }, 3500);
+            }
+        }
+
+        // ZAKUP I ANIMACJA OTWIERANIA PACZKI
         function buyPack(packId) {
             const pack = packs.find(p => p.id === packId);
             if (money < pack.price) return;
@@ -998,7 +1103,6 @@
                 currentOpenedCardsList.push(randomCard);
             }
 
-            // Otwórz modal i pokaż ZAMKNIĘTĄ PACZKĘ
             document.getElementById('modal').style.display = 'flex';
             document.getElementById('modal-title').innerText = `Otwórz paczkę: ${pack.name}`;
             document.getElementById('pack-counter-text').style.display = 'none';
@@ -1007,7 +1111,7 @@
 
             const area = document.getElementById('pack-opening-area');
             area.innerHTML = `
-                <div class="closed-pack ${pack.class}" onclick="startOpeningPackSequence()">
+                <div class="closed-pack ${pack.class}" id="pack-box-element" onclick="triggerPackBurst()">
                     <span style="font-size: 36px;">📦</span>
                     <span style="margin-top: 10px; font-size: 14px;">Kliknij, aby otworzyć!</span>
                 </div>
@@ -1016,14 +1120,17 @@
             updateUI();
         }
 
-        // KROK 2: Kliknięcie w paczkę uruchamia pierwszą kartę
-        function startOpeningPackSequence() {
-            currentCardIndex = 0;
-            document.getElementById('pack-counter-text').style.display = 'block';
-            showCardInSequence();
+        function triggerPackBurst() {
+            const packBox = document.getElementById('pack-box-element');
+            packBox.classList.add('burst-animation');
+            
+            setTimeout(() => {
+                currentCardIndex = 0;
+                document.getElementById('pack-counter-text').style.display = 'block';
+                showCardInSequence();
+            }, 350);
         }
 
-        // KROK 3: Wyświetlanie kolejnych kart z paczki
         function showCardInSequence() {
             const container = document.getElementById('pack-opening-area');
             const counterText = document.getElementById('pack-counter-text');
