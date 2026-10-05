@@ -267,29 +267,6 @@
         }
         .btn-daily:hover { background: #059669; }
 
-        .codes-container, .battle-container {
-            background: rgba(31, 40, 51, 0.9);
-            padding: 30px;
-            border-radius: 15px;
-            border: 2px solid #3a4750;
-            max-width: 600px;
-            margin: 0 auto;
-            text-align: center;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-        }
-        .codes-container input {
-            width: 100%;
-            padding: 12px;
-            margin: 15px 0;
-            background: #111;
-            border: 1px solid #3a4750;
-            color: white;
-            border-radius: 6px;
-            box-sizing: border-box;
-            font-size: 16px;
-            text-align: center;
-        }
-
         .wheel-container {
             text-align: center;
             background: rgba(31, 40, 51, 0.9);
@@ -445,9 +422,9 @@
     </header>
 
     <nav>
-        <button class="tab-btn active" onclick="switchTab('shop')">Sklep</button>
-        <button class="tab-btn" onclick="switchTab('wheel')">Koło Fortuny</button>
-        <button class="tab-btn" onclick="switchTab('collection')">Kolekcja</button>
+        <button class="tab-btn active" onclick="switchTab('shop', event)">Sklep</button>
+        <button class="tab-btn" onclick="switchTab('wheel', event)">Koło Fortuny</button>
+        <button class="tab-btn" onclick="switchTab('collection', event)">Kolekcja</button>
     </nav>
 
     <main>
@@ -456,7 +433,7 @@
             <h2>Sklep z Paczkami</h2>
             <div class="shop-grid">
                 <div class="pack-card rare-pack" onclick="buyPack('rare', 100)">
-                    <h3>Paczką Rzadka</h3>
+                    <h3>Paczka Rzadka</h3>
                     <div class="pack-visual">RPA</div>
                     <p>Zawiera rzadkie karty</p>
                     <button class="btn">Kup (100 $)</button>
@@ -508,7 +485,6 @@
     </div>
 
     <script>
-        // Baza kart
         const cardsData = [
             { id: 1, name: 'Spider-Man', rarity: 'rare', icon: '🕷️', value: 30 },
             { id: 2, name: 'Iron Man', rarity: 'rare', icon: '🤖', value: 40 },
@@ -528,10 +504,17 @@
 
         function handleLogin() {
             const username = document.getElementById('username-input').value.trim();
+            const password = document.getElementById('password-input').value;
+
             if (!username) {
                 alert('Wpisz nazwę użytkownika!');
                 return;
             }
+            if (!password) {
+                alert('Wpisz hasło!');
+                return;
+            }
+
             currentUser = username;
             document.getElementById('logged-user-display').innerText = currentUser;
             document.getElementById('auth-overlay').style.display = 'none';
@@ -554,11 +537,13 @@
             localStorage.setItem('marvel_game_' + currentUser, JSON.stringify(userData));
         }
 
-        function switchTab(tabId) {
+        function switchTab(tabId, event) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
             document.getElementById(tabId).classList.add('active');
-            event.target.classList.add('active');
+            if (event && event.target) {
+                event.target.classList.add('active');
+            }
             if (tabId === 'collection') renderCollection();
         }
 
@@ -574,7 +559,6 @@
             }
             userData.money -= price;
             
-            // Losowanie karty
             const card = cardsData[Math.floor(Math.random() * cardsData.length)];
             userData.collection[card.id] = (userData.collection[card.id] || 0) + 1;
 
