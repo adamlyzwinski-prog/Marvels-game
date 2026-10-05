@@ -3,17 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Marvel Card Game</title>
+    <title>Marvel Card Collector</title>
     <style>
         :root {
             --bg-color: #0b0c10;
             --panel-bg: #1f2833;
             --accent: #e50914;
             --text-color: #ffffff;
-            
             --rare: #3b82f6;
             --epic: #a855f7;
-            --mythic: #ef4444;
+            --mythic: #f97316;
             --legendary: #eab308;
         }
 
@@ -29,6 +28,7 @@
             min-height: 100vh;
         }
 
+        /* Ekran logowania */
         #auth-overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -62,6 +62,7 @@
             font-size: 16px;
         }
 
+        /* Stylowanie ciemnego paska przewijania */
         ::-webkit-scrollbar {
             width: 6px;
             height: 6px;
@@ -160,76 +161,30 @@
             display: block;
         }
 
+        /* Sklep */
         .shop-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 25px;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
         }
 
         .pack-card {
-            border-radius: 16px;
-            padding: 25px 20px;
+            background: rgba(31, 40, 51, 0.9);
+            border-radius: 12px;
+            padding: 20px;
             text-align: center;
-            transition: transform 0.3s, box-shadow 0.3s;
+            border: 1px solid #3a4750;
+            transition: transform 0.2s, box-shadow 0.2s;
             display: flex;
             flex-direction: column;
-            align-items: center;
             justify-content: space-between;
-            color: #fff;
-            position: relative;
-            overflow: hidden;
-            cursor: pointer;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.4);
         }
-
-        .pack-visual {
-            width: 110px;
-            height: 150px;
-            border-radius: 8px;
-            margin: 15px 0;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.5), inset 0 0 15px rgba(255,255,255,0.2);
-            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
-            font-weight: bold;
-            border: 2px solid rgba(255,255,255,0.3);
-            transition: transform 0.3s;
-        }
-
-        .pack-card:hover .pack-visual {
-            transform: scale(1.05) rotate(2deg);
-        }
-
-        .pack-card.rare-pack {
-            background: linear-gradient(135deg, rgba(30,58,138,0.8), rgba(15,23,42,0.9));
-            border: 2px solid var(--rare);
-        }
-        .rare-pack .pack-visual { background: linear-gradient(135deg, #1e40af, #3b82f6, #1d4ed8); }
-
-        .pack-card.epic-pack {
-            background: linear-gradient(135deg, rgba(88,28,135,0.8), rgba(15,23,42,0.9));
-            border: 2px solid var(--epic);
-        }
-        .epic-pack .pack-visual { background: linear-gradient(135deg, #6b21a8, #a855f7, #581c87); }
-
-        .pack-card.mythic-pack {
-            background: linear-gradient(135deg, rgba(127,29,29,0.8), rgba(15,23,42,0.9));
-            border: 2px solid var(--mythic);
-        }
-        .mythic-pack .pack-visual { background: linear-gradient(135deg, #991b1b, #ef4444, #7f1d1d); }
-
-        .pack-card.legendary-pack {
-            background: linear-gradient(135deg, rgba(113,63,18,0.8), rgba(15,23,42,0.9));
-            border: 2px solid var(--legendary);
-            box-shadow: 0 0 25px rgba(234, 179, 8, 0.3);
-        }
-        .legendary-pack .pack-visual { background: linear-gradient(135deg, #854d0e, #eab308, #ca8a04); }
 
         .pack-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(0,0,0,0.7);
+            box-shadow: 0 12px 25px rgba(229,9,20,0.3);
+            border-color: var(--accent);
         }
 
         .btn {
@@ -241,12 +196,12 @@
             cursor: pointer;
             font-weight: bold;
             transition: background 0.2s;
-            margin-top: 10px;
+            margin-top: 15px;
             box-shadow: 0 4px 6px rgba(0,0,0,0.3);
         }
 
         .btn:hover { background: #b20710; }
-        .btn:disabled { background: #444; cursor: not-allowed; box-shadow: none; filter: grayscale(0.5); }
+        .btn:disabled { background: #444; cursor: not-allowed; box-shadow: none; }
 
         .btn-sell {
             background: #10b981;
@@ -265,12 +220,13 @@
         }
         .btn-daily:hover { background: #059669; }
 
-        .codes-container, .battle-container {
+        /* Kody promocyjne */
+        .codes-container {
             background: rgba(31, 40, 51, 0.9);
             padding: 30px;
             border-radius: 15px;
             border: 2px solid #3a4750;
-            max-width: 600px;
+            max-width: 500px;
             margin: 0 auto;
             text-align: center;
             box-shadow: 0 10px 25px rgba(0,0,0,0.5);
@@ -288,6 +244,7 @@
             text-align: center;
         }
 
+        /* Karuzela Koła Fortuny */
         .wheel-container {
             text-align: center;
             background: rgba(31, 40, 51, 0.9);
@@ -372,6 +329,7 @@
         }
 
         .wheel-card {
+            background: rgba(26, 28, 41, 0.95);
             border-radius: 6px;
             padding: 4px;
             text-align: center;
@@ -387,10 +345,10 @@
             justify-content: space-between;
         }
 
-        .wheel-card.rare { border-color: var(--rare); background: linear-gradient(135deg, #0f172a, #1e3a8a); }
-        .wheel-card.epic { border-color: var(--epic); background: linear-gradient(135deg, #0f172a, #581c87); }
-        .wheel-card.mythic { border-color: var(--mythic); background: linear-gradient(135deg, #0f172a, #7f1d1d); }
-        .wheel-card.legendary { border-color: var(--legendary); background: linear-gradient(135deg, #1c1917, #713f12); box-shadow: 0 0 8px rgba(234, 179, 8, 0.4); }
+        .wheel-card.rare { border-color: var(--rare); }
+        .wheel-card.epic { border-color: var(--epic); }
+        .wheel-card.mythic { border-color: var(--mythic); }
+        .wheel-card.legendary { border-color: var(--legendary); box-shadow: 0 0 8px rgba(234, 179, 8, 0.4); }
 
         .wheel-card .card-avatar {
             width: 28px;
@@ -418,6 +376,7 @@
             text-transform: uppercase;
         }
 
+        /* Deck (5 slotów) */
         .deck-slots {
             display: flex;
             gap: 15px;
@@ -428,7 +387,7 @@
 
         .deck-slot {
             width: 140px;
-            height: 210px;
+            height: 200px;
             background: rgba(31, 40, 51, 0.6);
             border: 2px dashed #555;
             border-radius: 12px;
@@ -447,6 +406,7 @@
             background: rgba(31, 40, 51, 0.95);
         }
 
+        /* Siatka kart / Indeks */
         .collection-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
@@ -454,6 +414,7 @@
         }
 
         .card {
+            background: rgba(26, 28, 41, 0.95);
             border-radius: 12px;
             padding: 10px;
             text-align: center;
@@ -470,23 +431,10 @@
             justify-content: space-between;
         }
 
-        .card.rare { 
-            border-color: var(--rare); 
-            background: linear-gradient(160deg, #091e3a 0%, #1e3a8a 100%);
-        }
-        .card.epic { 
-            border-color: var(--epic); 
-            background: linear-gradient(160deg, #2e1065 0%, #581c87 100%);
-        }
-        .card.mythic { 
-            border-color: var(--mythic); 
-            background: linear-gradient(160deg, #450a0a 0%, #7f1d1d 100%);
-        }
-        .card.legendary { 
-            border-color: var(--legendary); 
-            background: linear-gradient(160deg, #422006 0%, #713f12 100%);
-            box-shadow: 0 0 15px rgba(234, 179, 8, 0.4);
-        }
+        .card.rare { border-color: var(--rare); }
+        .card.epic { border-color: var(--epic); }
+        .card.mythic { border-color: var(--mythic); }
+        .card.legendary { border-color: var(--legendary); box-shadow: 0 0 15px rgba(234, 179, 8, 0.4); }
 
         .card-avatar {
             width: 60px;
@@ -537,23 +485,22 @@
         .card.locked {
             opacity: 0.3;
             filter: grayscale(1);
-            background: rgba(26, 28, 41, 0.95) !important;
         }
 
-        .card.exhausted {
-            filter: sepia(1) hue-rotate(300deg) brightness(0.6);
-            border-color: #ef4444 !important;
+        .card.locked .card-avatar {
+            background: #222;
         }
 
+        /* Modal */
         #modal {
             display: none;
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.92);
+            background: rgba(0,0,0,0.85);
             justify-content: center;
             align-items: center;
             z-index: 1000;
-            backdrop-filter: blur(8px);
+            backdrop-filter: blur(5px);
         }
 
         .modal-content {
@@ -561,83 +508,20 @@
             padding: 30px;
             border-radius: 15px;
             text-align: center;
-            max-width: 500px;
+            max-width: 600px;
             width: 90%;
             border: 2px solid var(--accent);
             box-shadow: 0 10px 30px rgba(0,0,0,0.8);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
         }
 
-        .pack-opening-area {
-            position: relative;
-            width: 200px;
-            height: 280px;
-            margin: 20px auto;
+        .pulled-cards {
             display: flex;
+            flex-wrap: wrap;
             justify-content: center;
-            align-items: center;
-            perspective: 1000px;
-        }
-
-        .closed-pack {
-            width: 150px;
-            height: 220px;
-            border-radius: 12px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.7), inset 0 0 20px rgba(255,255,255,0.3);
-            border: 3px solid rgba(255,255,255,0.4);
-            animation: pulsePack 1.5s infinite alternate;
-            text-shadow: 0 2px 5px rgba(0,0,0,0.8);
-            font-weight: bold;
-            color: #fff;
-            transition: transform 0.3s;
-        }
-
-        .closed-pack:hover {
-            transform: scale(1.08);
-        }
-
-        @keyframes packBurst {
-            0% { transform: scale(1); opacity: 1; filter: brightness(1); }
-            50% { transform: scale(1.4); opacity: 0.8; filter: brightness(2); }
-            100% { transform: scale(0); opacity: 0; }
-        }
-
-        .burst-animation {
-            animation: packBurst 0.4s ease-out forwards;
-        }
-
-        @keyframes pulsePack {
-            0% { transform: scale(1) rotate(0deg); }
-            50% { transform: scale(1.05) rotate(-2deg); }
-            100% { transform: scale(1) rotate(2deg); }
-        }
-
-        @keyframes slideOutCard {
-            0% {
-                transform: translateY(60px) scale(0.6);
-                opacity: 0;
-            }
-            100% {
-                transform: translateY(0) scale(1);
-                opacity: 1;
-            }
-        }
-
-        .opening-card-container {
-            animation: slideOutCard 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-        }
-
-        .pack-counter {
-            font-size: 14px;
-            color: #aaa;
-            margin-bottom: 5px;
+            gap: 15px;
+            margin: 20px 0;
+            max-height: 400px;
+            overflow-y: auto;
         }
     </style>
 </head>
@@ -663,4 +547,497 @@
     </header>
 
     <nav>
-        <button class="tab-bt
+        <button class="tab-btn active" onclick="switchTab('shop')">Sklep</button>
+        <button class="tab-btn" onclick="switchTab('wheel')">Koło Fortuny</button>
+        <button class="tab-btn" onclick="switchTab('codes')">Kody</button>
+        <button class="tab-btn" onclick="switchTab('deck')">Deck</button>
+        <button class="tab-btn" onclick="switchTab('index-tab')">Indeks</button>
+    </nav>
+
+    <main>
+        <!-- SKLEP -->
+        <div id="shop" class="tab-content active">
+            <h2>Kup paczki z kartami</h2>
+            <div class="shop-grid" id="shop-packs"></div>
+        </div>
+
+        <!-- KOŁO FORTUNY -->
+        <div id="wheel" class="tab-content">
+            <h2>Koło Fortuny Kart</h2>
+            <div class="wheel-container">
+                <p>Wybierz tryb kręcenia (35 $ za 1 koło):</p>
+                <div class="spin-count-selector">
+                    <button class="spin-btn-option selected" id="spin-count-1" onclick="setSpinCount(1)">1 Koło (35 $)</button>
+                    <button class="spin-btn-option" id="spin-count-5" onclick="setSpinCount(5)">5 Kół (175 $)</button>
+                    <button class="spin-btn-option" id="spin-count-10" onclick="setSpinCount(10)">10 Kół (350 $)</button>
+                </div>
+                <div class="roulettes-box" id="roulettes-box"></div>
+                <button class="btn" id="spin-btn" onclick="spinWheel()">Zakręć wybranymi kołami!</button>
+            </div>
+        </div>
+
+        <!-- KODY -->
+        <div id="codes" class="tab-content">
+            <h2>Kody Promocyjne</h2>
+            <div class="codes-container">
+                <p>Wpisz poniżej kod, aby odebrać darmową gotówkę:</p>
+                <input type="text" id="promo-code-input" placeholder="Wpisz kod..." autocomplete="off">
+                <button class="btn" style="width: 100%;" onclick="redeemCode()">Aktywuj kod</button>
+            </div>
+        </div>
+
+        <!-- DECK -->
+        <div id="deck" class="tab-content">
+            <h2>Twój Aktywny Deck (5 miejsc)</h2>
+            <p>Kliknij na kartę w Indeksie, aby dodać ją do wolnego slotu w Decku.</p>
+            <div class="deck-slots" id="deck-slots-container"></div>
+        </div>
+
+        <!-- INDEKS -->
+        <div id="index-tab" class="tab-content">
+            <h2>Indeks Wszystkich Kart Marvela</h2>
+            <p>Możesz tutaj dodawać karty do Decku lub je sprzedawać za gotówkę.</p>
+            <div class="collection-grid" id="collection-grid"></div>
+        </div>
+    </main>
+
+    <!-- MODAL WYNIKU -->
+    <div id="modal">
+        <div class="modal-content">
+            <h3 id="modal-title">Zawartość:</h3>
+            <div class="pulled-cards" id="pulled-cards-container"></div>
+            <button class="btn" onclick="closeModal()">Super!</button>
+        </div>
+    </div>
+
+    <script>
+        const allCards = [
+            { id: 'r1', name: 'Iron Man', rarity: 'rare', value: 10, icon: '🤖' },
+            { id: 'r2', name: 'Captain America', rarity: 'rare', value: 10, icon: '🛡️' },
+            { id: 'r3', name: 'Thor', rarity: 'rare', value: 10, icon: '⚡' },
+            { id: 'r4', name: 'Hulk', rarity: 'rare', value: 10, icon: '🟩' },
+            { id: 'r5', name: 'Black Widow', rarity: 'rare', value: 10, icon: '🕷️' },
+            { id: 'e1', name: 'Spider-Man', rarity: 'epic', value: 30, icon: '🕸️️' },
+            { id: 'e2', name: 'Doctor Strange', rarity: 'epic', value: 30, icon: '🔮' },
+            { id: 'e3', name: 'Scarlet Witch', rarity: 'epic', value: 30, icon: '🔴' },
+            { id: 'm1', name: 'Thanos', rarity: 'mythic', value: 50, icon: '🧤' },
+            { id: 'm2', name: 'Silver Surfer', rarity: 'mythic', value: 50, icon: '🏄‍♂️' },
+            { id: 'l1', name: 'Stan Lee', rarity: 'legendary', value: 100, icon: '🕶' },
+            { id: 'l2', name: 'Galactus', rarity: 'legendary', value: 100, icon: '🪐' }
+        ];
+
+        const packs = [
+            { id: 'rare', name: 'Rzadka Paczka', price: 30, cardsCount: 2 },
+            { id: 'epic', name: 'Epicka Paczka', price: 80, cardsCount: 3 },
+            { id: 'mythic', name: 'Mityczna Paczka', price: 150, cardsCount: 3 },
+            { id: 'legendary', name: 'Legendarna Paczka', price: 300, cardsCount: 4 }
+        ];
+
+        let currentUser = null;
+        let money = 350;
+        let inventory = {}; 
+        let activeDeck = [null, null, null, null, null];
+        let lastDailyClaim = 0;
+        let selectedSpinCount = 1;
+        let usedCodes = [];
+
+        allCards.forEach(card => { inventory[card.id] = 0; });
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        function handleLogin() {
+            const username = document.getElementById('username-input').value.trim();
+            const password = document.getElementById('password-input').value;
+
+            if (!username || !password) {
+                alert("Wprowadź nazwę użytkownika oraz hasło!");
+                return;
+            }
+
+            const usersDb = JSON.parse(localStorage.getItem('marvel_users_db')) || {};
+
+            if (usersDb[username]) {
+                if (usersDb[username].password !== password) {
+                    alert("Błędne hasło dla tego użytkownika!");
+                    return;
+                }
+                const data = usersDb[username];
+                money = data.money;
+                inventory = data.inventory;
+                activeDeck = data.activeDeck;
+                lastDailyClaim = data.lastDailyClaim || 0;
+                usedCodes = data.usedCodes || [];
+            } else {
+                usersDb[username] = {
+                    password: password,
+                    money: 350,
+                    inventory: { ...inventory },
+                    activeDeck: [null, null, null, null, null],
+                    lastDailyClaim: 0,
+                    usedCodes: []
+                };
+                localStorage.setItem('marvel_users_db', JSON.stringify(usersDb));
+                money = 350;
+                allCards.forEach(card => { inventory[card.id] = 0; });
+                activeDeck = [null, null, null, null, null];
+                lastDailyClaim = 0;
+                usedCodes = [];
+            }
+
+            currentUser = username;
+            document.getElementById('logged-user-display').innerText = `(${currentUser})`;
+            document.getElementById('auth-overlay').style.display = 'none';
+            
+            updateUI();
+            initRoulettes(1);
+        }
+
+        function saveUserData() {
+            if (!currentUser) return;
+            const usersDb = JSON.parse(localStorage.getItem('marvel_users_db')) || {};
+            usersDb[currentUser] = {
+                password: usersDb[currentUser].password,
+                money: money,
+                inventory: inventory,
+                activeDeck: activeDeck,
+                lastDailyClaim: lastDailyClaim,
+                usedCodes: usedCodes
+            };
+            localStorage.setItem('marvel_users_db', JSON.stringify(usersDb));
+        }
+
+        function updateUI() {
+            document.getElementById('money').innerText = money;
+            renderShop();
+            renderCollection();
+            renderDeck();
+            saveUserData();
+        }
+
+        function claimDaily() {
+            const now = Date.now();
+            if (now - lastDailyClaim < 86400000) {
+                alert("Codzienną nagrodę można odbierać raz na 24 godziny!");
+                return;
+            }
+            lastDailyClaim = now;
+            money += 150;
+            alert("Odebrano codzienną nagrodę: +150 $!");
+            updateUI();
+        }
+
+        function redeemCode() {
+            const codeInput = document.getElementById('promo-code-input');
+            const code = codeInput.value.trim();
+
+            if (!code) {
+                alert("Wpisz kod!");
+                return;
+            }
+
+            if (usedCodes.includes(code)) {
+                alert("Ten kod został już przez Ciebie wykorzystany!");
+                return;
+            }
+
+            if (code === "2026") {
+                money += 25;
+                usedCodes.push(code);
+                alert("Sukces! Otrzymałeś 25 $ za kod '2026'!");
+            } else if (code === "-+=") {
+                money += 10000;
+                usedCodes.push(code);
+                alert("Sukces! Otrzymałeś 10 000 $ za kod '-+='!");
+            } else if (code === "TWÓRCAXYZ") {
+                money += 1000;
+                usedCodes.push(code);
+                alert("Sukces! Otrzymałeś 1000 $ za kod 'TWÓRCAXYZ'!");
+            } else {
+                alert("Nieprawidłowy kod!");
+                return;
+            }
+
+            codeInput.value = "";
+            updateUI();
+        }
+
+        function renderShop() {
+            const container = document.getElementById('shop-packs');
+            container.innerHTML = '';
+            packs.forEach(pack => {
+                const div = document.createElement('div');
+                div.className = 'pack-card';
+                div.innerHTML = `
+                    <div>
+                        <h3>${pack.name}</h3>
+                        <p>Zawiera ${pack.cardsCount} losowe karty.</p>
+                    </div>
+                    <div>
+                        <p><strong>Cena: ${pack.price} $</strong></p>
+                        <button class="btn" onclick="buyPack('${pack.id}')" ${money < pack.price ? 'disabled' : ''}>Kup</button>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function renderCollection() {
+            const container = document.getElementById('collection-grid');
+            container.innerHTML = '';
+            allCards.forEach(card => {
+                const count = inventory[card.id];
+                const isLocked = count === 0;
+                const div = document.createElement('div');
+                div.className = `card ${card.rarity} ${isLocked ? 'locked' : ''}`;
+                
+                let htmlContent = `
+                    <div class="card-avatar">${isLocked ? '❓' : card.icon}</div>
+                    <div class="card-rarity">${card.rarity}</div>
+                    <div class="card-name">${isLocked ? '???' : card.name}</div>
+                    <div class="card-value">Wartość: ${card.value} $</div>
+                    <div class="card-count">Posiadasz: ${count}</div>
+                `;
+
+                if (!isLocked) {
+                    htmlContent += `
+                        <button class="btn" style="padding:4px 8px; font-size:11px; margin-top:4px;" onclick="assignToDeck('${card.id}')">Do Decku</button>
+                        <button class="btn btn-sell" onclick="sellCard('${card.id}')">Sprzedaj</button>
+                    `;
+                }
+
+                div.innerHTML = htmlContent;
+                container.appendChild(div);
+            });
+        }
+
+        function renderDeck() {
+            const container = document.getElementById('deck-slots-container');
+            container.innerHTML = '';
+            activeDeck.forEach((cardId, index) => {
+                const slot = document.createElement('div');
+                if (cardId) {
+                    const card = allCards.find(c => c.id === cardId);
+                    slot.className = `deck-slot filled card ${card.rarity}`;
+                    slot.innerHTML = `
+                        <div class="card-avatar">${card.icon}</div>
+                        <div class="card-rarity">${card.rarity}</div>
+                        <div class="card-name">${card.name}</div>
+                        <div class="card-value">${card.value} $</div>
+                        <button class="btn" style="padding:4px 8px; font-size:10px; margin-top:4px;" onclick="removeFromDeck(${index})">Usuń</button>
+                    `;
+                } else {
+                    slot.className = 'deck-slot';
+                    slot.innerHTML = `<span style="color:#777;">Slot ${index + 1}<br>Pusty</span>`;
+                }
+                container.appendChild(slot);
+            });
+        }
+
+        function assignToDeck(cardId) {
+            const countInDeck = activeDeck.filter(id => id === cardId).length;
+            const totalOwned = inventory[cardId];
+
+            if (countInDeck >= totalOwned) {
+                alert("Nie masz więcej wolnych sztuk tej karty w ekwipunku!");
+                return;
+            }
+
+            const emptyIndex = activeDeck.indexOf(null);
+            if (emptyIndex === -1) {
+                alert("Deck jest pełny! (Max 5 kart)");
+                return;
+            }
+
+            activeDeck[emptyIndex] = cardId;
+            updateUI();
+        }
+
+        function removeFromDeck(index) {
+            activeDeck[index] = null;
+            updateUI();
+        }
+
+        function sellCard(cardId) {
+            const countInDeck = activeDeck.filter(id => id === cardId).length;
+            const totalOwned = inventory[cardId];
+
+            if (totalOwned <= countInDeck) {
+                alert("Wszystkie sztuki tej karty są w Decku! Najpierw usuń ją z decku.");
+                return;
+            }
+
+            const card = allCards.find(c => c.id === cardId);
+            inventory[cardId]--;
+            money += card.value;
+            updateUI();
+        }
+
+        function buyPack(packId) {
+            const pack = packs.find(p => p.id === packId);
+            if (money < pack.price) return;
+
+            money -= pack.price;
+            let pulled = [];
+
+            for (let i = 0; i < pack.cardsCount; i++) {
+                let card = rollCard({ rare: 0.60, epic: 0.25, mythic: 0.12, legendary: 0.03 });
+                inventory[card.id]++;
+                pulled.push(card);
+            }
+
+            showModal(pulled, "Zawartość paczki:");
+            updateUI();
+        }
+
+        function initRoulettes(count) {
+            const box = document.getElementById('roulettes-box');
+            box.innerHTML = '';
+            for (let c = 0; c < count; c++) {
+                let wrapper = document.createElement('div');
+                wrapper.className = 'roulette-wrapper';
+                wrapper.innerHTML = `
+                    <div class="roulette-pointer"></div>
+                    <div class="roulette-track" id="track-${c}"></div>
+                `;
+                box.appendChild(wrapper);
+
+                let track = document.getElementById(`track-${c}`);
+                for (let i = 0; i < 5; i++) {
+                    let card = allCards[Math.floor(Math.random() * allCards.length)];
+                    track.innerHTML += `
+                        <div class="wheel-card ${card.rarity}">
+                            <div class="card-avatar">${card.icon}</div>
+                            <div class="card-rarity">${card.rarity}</div>
+                            <div class="card-name">${card.name}</div>
+                        </div>
+                    `;
+                }
+                track.style.transform = 'translateX(0px)';
+            }
+        }
+
+        function setSpinCount(count) {
+            selectedSpinCount = count;
+            document.querySelectorAll('.spin-btn-option').forEach(btn => btn.classList.remove('selected'));
+            document.getElementById(`spin-count-${count}`).classList.add('selected');
+            initRoulettes(count);
+        }
+
+        function spinWheel() {
+            const costPerSpin = 35;
+            const totalCost = costPerSpin * selectedSpinCount;
+
+            if (money < totalCost) {
+                alert(`Nie masz wystarczająco dużo pieniędzy! Potrzebujesz ${totalCost} $.`);
+                return;
+            }
+
+            money -= totalCost;
+            updateUI();
+
+            const spinBtn = document.getElementById('spin-btn');
+            spinBtn.disabled = true;
+            document.querySelectorAll('.spin-btn-option').forEach(btn => btn.disabled = true);
+
+            let allPulledCards = [];
+
+            for (let c = 0; c < selectedSpinCount; c++) {
+                const track = document.getElementById(`track-${c}`);
+                let wheelChances = { rare: 0.40, epic: 0.30, mythic: 0.20, legendary: 0.10 };
+                let winningCard = rollCard(wheelChances);
+                allPulledCards.push(winningCard);
+
+                let totalCards = 35;
+                let winningIndex = 29;
+                let cardsList = [];
+
+                for (let i = 0; i < totalCards; i++) {
+                    if (i === winningIndex) {
+                        cardsList.push(winningCard);
+                    } else {
+                        cardsList.push(allCards[Math.floor(Math.random() * allCards.length)]);
+                    }
+                }
+
+                track.innerHTML = '';
+                cardsList.forEach(card => {
+                    track.innerHTML += `
+                        <div class="wheel-card ${card.rarity}">
+                            <div class="card-avatar">${card.icon}</div>
+                            <div class="card-rarity">${card.rarity}</div>
+                            <div class="card-name">${card.name}</div>
+                        </div>
+                    `;
+                });
+
+                let cardWidth = 78; 
+                let containerWidth = document.querySelector('.roulette-wrapper').offsetWidth;
+                let targetOffset = (winningIndex * cardWidth) - (containerWidth / 2) + (cardWidth / 2) + (Math.random() * 20 - 10);
+
+                track.style.transition = 'none';
+                track.style.transform = 'translateX(0px)';
+                track.getBoundingClientRect();
+
+                track.style.transition = 'transform 3.5s cubic-bezier(0.15, 0.85, 0.25, 1)';
+                track.style.transform = `translateX(-${targetOffset}px)`;
+            }
+
+            setTimeout(() => {
+                allPulledCards.forEach(card => {
+                    inventory[card.id]++;
+                });
+                spinBtn.disabled = false;
+                document.querySelectorAll('.spin-btn-option').forEach(btn => btn.disabled = false);
+                updateUI();
+                showModal(allPulledCards, selectedSpinCount === 1 ? "Koło fortuny wylosowało kartę!" : `Wyniki ${selectedSpinCount} kół fortuny:`);
+            }, 3700);
+        }
+
+        function rollCard(chances) {
+            let rand = Math.random();
+            let cumulative = 0;
+            let chosenRarity = 'rare';
+
+            for (let rarity in chances) {
+                cumulative += chances[rarity];
+                if (rand <= cumulative) {
+                    chosenRarity = rarity;
+                    break;
+                }
+            }
+
+            let filtered = allCards.filter(c => c.rarity === chosenRarity);
+            return filtered[Math.floor(Math.random() * filtered.length)];
+        }
+
+        function showModal(cards, title) {
+            document.getElementById('modal-title').innerText = title;
+            const container = document.getElementById('pulled-cards-container');
+            container.innerHTML = '';
+
+            cards.forEach(card => {
+                const div = document.createElement('div');
+                div.className = `card ${card.rarity}`;
+                div.innerHTML = `
+                    <div class="card-avatar">${card.icon}</div>
+                    <div class="card-rarity">${card.rarity}</div>
+                    <div class="card-name">${card.name}</div>
+                    <div class="card-value">Wartość: ${card.value} $</div>
+                `;
+                container.appendChild(div);
+            });
+
+            document.getElementById('modal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('modal').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
