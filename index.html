@@ -167,7 +167,6 @@
         }
 
         .pack-card {
-            background: rgba(31, 40, 51, 0.9);
             border-radius: 16px;
             padding: 25px 20px;
             text-align: center;
@@ -180,7 +179,6 @@
             position: relative;
             overflow: hidden;
             cursor: pointer;
-            border: 2px solid #3a4750;
         }
 
         .pack-visual {
@@ -267,6 +265,29 @@
         }
         .btn-daily:hover { background: #059669; }
 
+        .codes-container, .battle-container {
+            background: rgba(31, 40, 51, 0.9);
+            padding: 30px;
+            border-radius: 15px;
+            border: 2px solid #3a4750;
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+        }
+        .codes-container input {
+            width: 100%;
+            padding: 12px;
+            margin: 15px 0;
+            background: #111;
+            border: 1px solid #3a4750;
+            color: white;
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-size: 16px;
+            text-align: center;
+        }
+
         .wheel-container {
             text-align: center;
             background: rgba(31, 40, 51, 0.9);
@@ -279,6 +300,151 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+        }
+
+        .spin-count-selector {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .spin-btn-option {
+            background: #2a2e43;
+            color: #fff;
+            border: 2px solid #444;
+            padding: 6px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.2s;
+        }
+
+        .spin-btn-option.selected {
+            border-color: var(--accent);
+            background: rgba(229, 9, 20, 0.2);
+            box-shadow: 0 0 10px rgba(229, 9, 20, 0.4);
+        }
+
+        .roulettes-box {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            width: 100%;
+            margin: 10px 0;
+            max-height: 400px;
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding-right: 2px;
+        }
+
+        .roulette-wrapper {
+            position: relative;
+            width: 100%;
+            height: 90px;
+            overflow: hidden;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 8px;
+            border: 1px solid #3a4750;
+            display: flex;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        .roulette-pointer {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: #e50914;
+            transform: translateX(-50%);
+            z-index: 10;
+            box-shadow: 0 0 8px #e50914;
+        }
+
+        .roulette-track {
+            display: flex;
+            position: absolute;
+            gap: 8px;
+            will-change: transform;
+            padding-left: 20px;
+        }
+
+        .wheel-card {
+            border-radius: 6px;
+            padding: 4px;
+            text-align: center;
+            border: 2px solid #333;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 70px;
+            min-width: 70px;
+            height: 78px;
+            box-sizing: border-box;
+            justify-content: space-between;
+        }
+
+        .wheel-card.rare { border-color: var(--rare); background: linear-gradient(135deg, #0f172a, #1e3a8a); }
+        .wheel-card.epic { border-color: var(--epic); background: linear-gradient(135deg, #0f172a, #581c87); }
+        .wheel-card.mythic { border-color: var(--mythic); background: linear-gradient(135deg, #0f172a, #7f1d1d); }
+        .wheel-card.legendary { border-color: var(--legendary); background: linear-gradient(135deg, #1c1917, #713f12); box-shadow: 0 0 8px rgba(234, 179, 8, 0.4); }
+
+        .wheel-card .card-avatar {
+            width: 28px;
+            height: 28px;
+            font-size: 13px;
+            border-radius: 50%;
+            background: radial-gradient(circle, #3a4750 0%, #1f2833 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .wheel-card .card-name {
+            font-size: 8px;
+            font-weight: bold;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            width: 100%;
+        }
+
+        .wheel-card .card-rarity {
+            font-size: 6px;
+            text-transform: uppercase;
+        }
+
+        .deck-slots {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+        }
+
+        .deck-slot {
+            width: 140px;
+            height: 210px;
+            background: rgba(31, 40, 51, 0.6);
+            border: 2px dashed #555;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+
+        .deck-slot.filled {
+            border-style: solid;
+            background: rgba(31, 40, 51, 0.95);
         }
 
         .collection-grid {
@@ -398,6 +564,76 @@
             flex-direction: column;
             align-items: center;
         }
+
+        .pack-opening-area {
+            position: relative;
+            width: 200px;
+            height: 280px;
+            margin: 20px auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            perspective: 1000px;
+        }
+
+        .closed-pack {
+            width: 150px;
+            height: 220px;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.7), inset 0 0 20px rgba(255,255,255,0.3);
+            border: 3px solid rgba(255,255,255,0.4);
+            animation: pulsePack 1.5s infinite alternate;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.8);
+            font-weight: bold;
+            color: #fff;
+            transition: transform 0.3s;
+        }
+
+        .closed-pack:hover {
+            transform: scale(1.08);
+        }
+
+        @keyframes packBurst {
+            0% { transform: scale(1); opacity: 1; filter: brightness(1); }
+            50% { transform: scale(1.4); opacity: 0.8; filter: brightness(2); }
+            100% { transform: scale(0); opacity: 0; }
+        }
+
+        .burst-animation {
+            animation: packBurst 0.4s ease-out forwards;
+        }
+
+        @keyframes pulsePack {
+            0% { transform: scale(1) rotate(0deg); }
+            50% { transform: scale(1.05) rotate(-2deg); }
+            100% { transform: scale(1) rotate(2deg); }
+        }
+
+        @keyframes slideOutCard {
+            0% {
+                transform: translateY(60px) scale(0.6);
+                opacity: 0;
+            }
+            100% {
+                transform: translateY(0) scale(1);
+                opacity: 1;
+            }
+        }
+
+        .opening-card-container {
+            animation: slideOutCard 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        .pack-counter {
+            font-size: 14px;
+            color: #aaa;
+            margin-bottom: 5px;
+        }
     </style>
 </head>
 <body>
@@ -422,219 +658,6 @@
     </header>
 
     <nav>
-        <button class="tab-btn active" onclick="switchTab('shop', event)">Sklep</button>
-        <button class="tab-btn" onclick="switchTab('wheel', event)">Koło Fortuny</button>
-        <button class="tab-btn" onclick="switchTab('collection', event)">Kolekcja</button>
-    </nav>
-
-    <main>
-        <!-- SKLEP -->
-        <div id="shop" class="tab-content active">
-            <h2>Sklep z Paczkami</h2>
-            <div class="shop-grid">
-                <div class="pack-card rare-pack" onclick="buyPack('rare', 100)">
-                    <h3>Paczka Rzadka</h3>
-                    <div class="pack-visual">RPA</div>
-                    <p>Zawiera rzadkie karty</p>
-                    <button class="btn">Kup (100 $)</button>
-                </div>
-                <div class="pack-card epic-pack" onclick="buyPack('epic', 250)">
-                    <h3>Paczka Epicka</h3>
-                    <div class="pack-visual">EPA</div>
-                    <p>Szansa na mocne karty</p>
-                    <button class="btn">Kup (250 $)</button>
-                </div>
-                <div class="pack-card mythic-pack" onclick="buyPack('mythic', 600)">
-                    <h3>Paczka Mityczna</h3>
-                    <div class="pack-visual">MYT</div>
-                    <p>Ekskluzywne postacie</p>
-                    <button class="btn">Kup (600 $)</button>
-                </div>
-                <div class="pack-card legendary-pack" onclick="buyPack('legendary', 1500)">
-                    <h3>Paczka Legendarna</h3>
-                    <div class="pack-visual">LEG</div>
-                    <p>Najpotężniejsze karty</p>
-                    <button class="btn">Kup (1500 $)</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- KOŁO FORTUNY -->
-        <div id="wheel" class="tab-content">
-            <div class="wheel-container">
-                <h2>Koło Fortuny</h2>
-                <p>Zakręć i wygraj nagrody lub unikalne karty!</p>
-                <button class="btn" onclick="spinWheel()">Zakręć (50 $)</button>
-            </div>
-        </div>
-
-        <!-- KOLEKCJA -->
-        <div id="collection" class="tab-content">
-            <h2>Twoja Kolekcja Kart</h2>
-            <div class="collection-grid" id="collection-grid"></div>
-        </div>
-    </main>
-
-    <!-- MODAL DO OTWIERANIA PACZEK -->
-    <div id="modal">
-        <div class="modal-content">
-            <h3>Wynik otwarcia</h3>
-            <div id="modal-body"></div>
-            <button class="btn" onclick="closeModal()">Zamknij</button>
-        </div>
-    </div>
-
-    <script>
-        const cardsData = [
-            { id: 1, name: 'Spider-Man', rarity: 'rare', icon: '🕷️', value: 30 },
-            { id: 2, name: 'Iron Man', rarity: 'rare', icon: '🤖', value: 40 },
-            { id: 3, name: 'Captain America', rarity: 'epic', icon: '🛡️', value: 90 },
-            { id: 4, name: 'Thor', rarity: 'epic', icon: '⚡', value: 110 },
-            { id: 5, name: 'Hulk', rarity: 'mythic', icon: '🟢', value: 250 },
-            { id: 6, name: 'Doctor Strange', rarity: 'mythic', icon: '🌀', value: 300 },
-            { id: 7, name: 'Thanos', rarity: 'legendary', icon: '🟣', value: 800 }
-        ];
-
-        let currentUser = null;
-        let userData = {
-            money: 350,
-            collection: {},
-            lastDaily: 0
-        };
-
-        function handleLogin() {
-            const username = document.getElementById('username-input').value.trim();
-            const password = document.getElementById('password-input').value;
-
-            if (!username) {
-                alert('Wpisz nazwę użytkownika!');
-                return;
-            }
-            if (!password) {
-                alert('Wpisz hasło!');
-                return;
-            }
-
-            currentUser = username;
-            document.getElementById('logged-user-display').innerText = currentUser;
-            document.getElementById('auth-overlay').style.display = 'none';
-            loadUserData();
-            updateUI();
-        }
-
-        function loadUserData() {
-            const saved = localStorage.getItem('marvel_game_' + currentUser);
-            if (saved) {
-                userData = JSON.parse(saved);
-            } else {
-                userData = { money: 350, collection: {}, lastDaily: 0 };
-                saveUserData();
-            }
-        }
-
-        function saveUserData() {
-            if (!currentUser) return;
-            localStorage.setItem('marvel_game_' + currentUser, JSON.stringify(userData));
-        }
-
-        function switchTab(tabId, event) {
-            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
-            document.getElementById(tabId).classList.add('active');
-            if (event && event.target) {
-                event.target.classList.add('active');
-            }
-            if (tabId === 'collection') renderCollection();
-        }
-
-        function updateUI() {
-            document.getElementById('money').innerText = userData.money;
-            saveUserData();
-        }
-
-        function buyPack(type, price) {
-            if (userData.money < price) {
-                alert('Za mało środków!');
-                return;
-            }
-            userData.money -= price;
-            
-            const card = cardsData[Math.floor(Math.random() * cardsData.length)];
-            userData.collection[card.id] = (userData.collection[card.id] || 0) + 1;
-
-            updateUI();
-            showModal(card);
-        }
-
-        function showModal(card) {
-            const modalBody = document.getElementById('modal-body');
-            modalBody.innerHTML = `
-                <div class="card ${card.rarity}" style="margin: 0 auto;">
-                    <div class="card-avatar">${card.icon}</div>
-                    <div class="card-rarity">${card.rarity}</div>
-                    <div class="card-name">${card.name}</div>
-                    <div class="card-value">Wartość: ${card.value}$</div>
-                </div>
-                <p style="margin-top: 15px;">Wylosowano nową kartę!</p>
-            `;
-            document.getElementById('modal').style.display = 'flex';
-        }
-
-        function closeModal() {
-            document.getElementById('modal').style.display = 'none';
-        }
-
-        function claimDaily() {
-            const now = Date.now();
-            if (now - userData.lastDaily < 86400000) {
-                alert('Codzienną nagrodę można odbierać raz na 24 godziny!');
-                return;
-            }
-            userData.lastDaily = now;
-            userData.money += 150;
-            updateUI();
-            alert('Odebrano codzienne 150$!');
-        }
-
-        function spinWheel() {
-            if (userData.money < 50) {
-                alert('Za mało środków na zakręcenie kołem (koszt: 50$)!');
-                return;
-            }
-            userData.money -= 50;
-            const reward = Math.random() > 0.5 ? 100 : 25;
-            userData.money += reward;
-            updateUI();
-            alert(`Koło się zatrzymało! Wygrana: ${reward}$`);
-        }
-
-        function renderCollection() {
-            const grid = document.getElementById('collection-grid');
-            grid.innerHTML = '';
-            cardsData.forEach(card => {
-                const count = userData.collection[card.id] || 0;
-                const cardEl = document.createElement('div');
-                cardEl.className = `card ${card.rarity} ${count === 0 ? 'locked' : ''}`;
-                cardEl.innerHTML = `
-                    <div class="card-avatar">${card.icon}</div>
-                    <div class="card-rarity">${card.rarity}</div>
-                    <div class="card-name">${card.name}</div>
-                    <div class="card-count">Posiadasz: ${count}</div>
-                    ${count > 0 ? `<button class="btn btn-sell" onclick="sellCard(${card.id})">Sprzedaj (${card.value}$)</button>` : ''}
-                `;
-                grid.appendChild(cardEl);
-            });
-        }
-
-        function sellCard(cardId) {
-            const card = cardsData.find(c => c.id === cardId);
-            if (userData.collection[cardId] && userData.collection[cardId] > 0) {
-                userData.collection[cardId]--;
-                userData.money += card.value;
-                updateUI();
-                renderCollection();
-            }
-        }
-    </script>
-</body>
-</html>
+        <button class="tab-btn active" onclick="switchTab('shop')">Sklep</button>
+        <button class="tab-btn" onclick="switchTab('wheel')">Koło Fortuny</button>
+        <but
