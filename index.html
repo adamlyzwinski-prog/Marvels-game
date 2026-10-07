@@ -180,7 +180,6 @@
             overflow: hidden;
         }
 
-        /* Wzorki i kolory paczek */
         .pack-card::before {
             content: '';
             position: absolute;
@@ -433,7 +432,6 @@
             gap: 20px;
         }
 
-        /* STYL KART WZorowany na załączonym obrazku (Chrome / Foil / Ramka / Banner) */
         .card {
             background-color: #111;
             border-radius: 12px;
@@ -471,7 +469,6 @@
             box-shadow: 0 0 15px rgba(234, 179, 8, 0.5); 
         }
 
-        /* Wewnętrzny czarny ekran karty z obramowaniem jak na foto */
         .card-inner-frame {
             width: 100%;
             height: 100%;
@@ -520,7 +517,6 @@
             box-shadow: inset 0 2px 5px rgba(0,0,0,0.5);
         }
 
-        /* Banner na nazwę postaci wzorowany na żółtej wstędze ze zdjęcia */
         .card-name-banner {
             background: #facc15;
             color: #111;
@@ -848,6 +844,117 @@
             updateUI();
         }
 
+        // Zmodyfikowana funkcja losowania kart opartego na wagach (trudniejsze zdobywanie lepszych rzadkości)
+        function getRandomCardByRarityWeights(packType) {
+            // Definiujemy szanse (wagę) dla poszczególnych rzadkości w zależności od paczki
+            let weights = { rare: 70, epic: 20, mythic: 8, legendary: 2 };
+
+            if (packType === 'epic') {
+                weights = { rare: 55, epic: 30, mythic: 12, legendary: 3 };
+            } else if (packType === 'mythic') {
+                weights = { rare: 40, epic: 35, mythic: 20, legendary: 5 };
+            } else if (packType === 'legendary') {
+                weights = { rare: 25, epic: 40, mythic: 25, legendary: 10 };
+            }
+
+            const totalWeight = weights.rare + weights.epic + weights.mythic + weights.legendary;
+            let randomNum = Math.random() * totalWeight;
+
+            let chosenRarity = 'rare';
+            if (randomNum < weights.rare) {
+                chosenRarity = 'rare';
+            } else if (randomNum < weights.rare + weights.epic) {
+                chosenRarity = 'epic';
+            } else if (randomNum < weights.rare + weights.epic + weights.mythic) {
+                chosenRarity = 'mythic';
+            } else {
+                chosenRarity = 'legendary';
+            }
+
+            // Wybieramy losową kartę z danej rzadkości
+            const pool = allCards.filter(card => card.rarity === chosenRarity);
+            return pool[Math.floor(Math.random() * pool.length)];
+        }
+
+        function buyPack(packId) {
+            const pack = packs.find(p => p.id === packId);
+            if (money < pack.price) {
+                alert("Nie masz wystarczająco dużo pieniędzy!");
+                return;
+            }
+
+            money -= pack.price;
+            const pulledCards = [];
+
+            for (let i = 0; i < pack.cardsCount; i++) {
+                const card = getRandomCardByRarityWeights(pack.id);
+                inventory[card.id]++;
+                pulledCards.push(card);
+            }
+
+            showModal(`Zawartość: ${pack.name}`, pulledCards);
+            updateUI();
+        }
+
+        function showModal(title, cards) {
+            document.getElementById('modal-title').innerText = title;
+            const container = document.getElementById('pulled-cards-container');
+            container.innerHTML = '';
+
+            cards.forEach(card => {
+                const div = document.createElement('div');
+                div.className = `card ${card.rarity}`;
+                div.innerHTML = `
+                    <div class="card-inner-frame">
+                        <div class="card-top-bar">
+                            <span class="card-chrome-logo">TOPPS CHROME</span>
+                            <span>${card.rarity}</span>
+                        </div>
+                        <div class="card-avatar">${card.icon}</div>
+                        <div class="card-name-banner">${card.name}</div>
+                        <div class="card-footer-box">
+                            <span>MARVEL</span>
+                            <span class="card-value">${card.value}$</span>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+
+            document.getElementById('modal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('modal').style.display = 'none';
+        }
+
+        function assignToDeck(cardId) {
+            const emptyIndex = activeDeck.indexOf(null);
+            if (emptyIndex === -1) {
+                alert("Twój deck jest pełny! Zastąp jakąś kartę lub sprzedaj nadmiarowe.");
+                return;
+            }
+            if (activeDeck.includes(cardId)) {
+                alert("Ta karta jest już w Twoim decku!");
+                return;
+            }
+            activeDeck[emptyIndex] = cardId;
+            updateUI();
+        }
+
+        function removeFromDeck(index) {
+            activeDeck[index] = null;
+            updateUI();
+        }
+
+        function sellCard(cardId) {
+            if (inventory[cardId] <= 0) return;
+            const card = allCards.find(c => c.id === cardId);
+            inventory[cardId]--;
+            money += Math.floor(card.value / 2); // Sprzedaż za połowę wartości
+            updateUI();
+        }
+
         function renderShop() {
             const container = document.getElementById('shop-packs');
             container.innerHTML = '';
@@ -913,161 +1020,26 @@
             container.innerHTML = '';
             activeDeck.forEach((cardId, index) => {
                 const slot = document.createElement('div');
+                slot.className = `deck-slot ${cardId ? 'filled' : ''}`;
                 if (cardId) {
                     const card = allCards.find(c => c.id === cardId);
-                    slot.className = `deck-slot filled card ${card.rarity}`;
+                    slot.className += ` card ${card.rarity}`;
                     slot.innerHTML = `
-                        <div class="card-inner-frame">
+                        <div class="card-inner-frame" style="width:100%; height:100%;">
                             <div class="card-top-bar">
-                                <span class="card-chrome-logo">TOPPS CHROME</span>
+                                <span class="card-chrome-logo">DECK</span>
                                 <span>${card.rarity}</span>
                             </div>
-                            <div class="card-avatar">${card.icon}</div>
-                            <div class="card-name-banner">${card.name}</div>
-                            <div class="card-footer-box">
-                               <span>MARVEL</span>
-                               <span class="card-value">${card.value}$</span>
-                            </div>
+                            <div class="card-avatar" style="width:45px; height:45px; font-size:22px;">${card.icon}</div>
+                            <div class="card-name-banner" style="font-size:9px;">${card.name}</div>
+                            <button class="btn btn-sell" style="margin:2px auto;" onclick="removeFromDeck(${index})">Usuń</button>
                         </div>
-                        <button class="btn" style="padding:2px 6px; font-size:9px; margin-top:4px;" onclick="removeFromDeck(${index})">Usuń z Decku</button>
                     `;
                 } else {
-                    slot.className = 'deck-slot';
-                    slot.innerHTML = `<span style="color:#777;">Slot ${index + 1}<br>Pusty</span>`;
+                    slot.innerHTML = `<span style="color:#777; font-size:13px;">Wolny Slot</span>`;
                 }
                 container.appendChild(slot);
             });
-        }
-
-        function assignToDeck(cardId) {
-            const countInDeck = activeDeck.filter(id => id === cardId).length;
-            const totalOwned = inventory[cardId];
-
-            if (countInDeck >= totalOwned) {
-                alert("Nie masz więcej wolnych sztuk tej karty w ekwipunku!");
-                return;
-            }
-
-            const emptyIndex = activeDeck.indexOf(null);
-            if (emptyIndex === -1) {
-                alert("Deck jest pełny! (Max 5 kart)");
-                return;
-            }
-
-            activeDeck[emptyIndex] = cardId;
-            updateUI();
-        }
-
-        function removeFromDeck(index) {
-            activeDeck[index] = null;
-            updateUI();
-        }
-
-        function sellCard(cardId) {
-            const countInDeck = activeDeck.filter(id => id === cardId).length;
-            const totalOwned = inventory[cardId];
-
-            if (totalOwned <= countInDeck) {
-                alert("Wszystkie sztuki tej karty są w Decku! Najpierw usuń ją z decku.");
-                return;
-            }
-
-            const card = allCards.find(c => c.id === cardId);
-            inventory[cardId]--;
-            money += card.value;
-            updateUI();
-        }
-
-        function buyPack(packId) {
-            const pack = packs.find(p => p.id === packId);
-            if (money < pack.price) return;
-
-            money -= pack.price;
-            let pulled = [];
-
-            for (let i = 0; i < pack.cardsCount; i++) {
-                let card = rollCard({ rare: 0.60, epic: 0.25, mythic: 0.12, legendary: 0.03 });
-                inventory[card.id]++;
-                pulled.push(card);
-            }
-
-            showModal(pulled, "Zawartość paczki:");
-            updateUI();
-        }
-
-        function rollCard(chances) {
-            const rand = Math.random();
-            let cumulative = 0;
-            let targetRarity = 'rare';
-
-            for (const [rarity, chance] of Object.entries(chances)) {
-                cumulative += chance;
-                if (rand <= cumulative) {
-                    targetRarity = rarity;
-                    break;
-                }
-            }
-
-            const available = allCards.filter(c => c.rarity === targetRarity);
-            return available[Math.floor(Math.random() * available.length)];
-        }
-
-        function showModal(cards, title) {
-            document.getElementById('modal-title').innerText = title;
-            const container = document.getElementById('pulled-cards-container');
-            container.innerHTML = '';
-
-            cards.forEach(card => {
-                const div = document.createElement('div');
-                div.className = `card ${card.rarity}`;
-                div.innerHTML = `
-                    <div class="card-inner-frame">
-                        <div class="card-top-bar">
-                            <span class="card-chrome-logo">TOPPS CHROME</span>
-                            <span>${card.rarity}</span>
-                        </div>
-                        <div class="card-avatar">${card.icon}</div>
-                        <div class="card-name-banner">${card.name}</div>
-                        <div class="card-footer-box">
-                            <span>MARVEL</span>
-                            <span class="card-value">${card.value}$</span>
-                        </div>
-                    </div>
-                `;
-                container.appendChild(div);
-            });
-
-            document.getElementById('modal').style.display = 'flex';
-        }
-
-        function closeModal() {
-            document.getElementById('modal').style.display = 'none';
-        }
-
-        function initRoulettes(count) {
-            const box = document.getElementById('roulettes-box');
-            box.innerHTML = '';
-            for (let c = 0; c < count; c++) {
-                let wrapper = document.createElement('div');
-                wrapper.className = 'roulette-wrapper';
-                wrapper.innerHTML = `
-                    <div class="roulette-pointer"></div>
-                    <div class="roulette-track" id="track-${c}"></div>
-                `;
-                box.appendChild(wrapper);
-
-                let track = document.getElementById(`track-${c}`);
-                for (let i = 0; i < 5; i++) {
-                    let card = allCards[Math.floor(Math.random() * allCards.length)];
-                    track.innerHTML += `
-                        <div class="wheel-card ${card.rarity}">
-                            <div class="card-avatar">${card.icon}</div>
-                            <div class="card-name">${card.name}</div>
-                        </div>
-                    `;
-                }
-                track.style.transform = 'translateX(0px)';
-            }
         }
 
         function setSpinCount(count) {
@@ -1077,20 +1049,89 @@
             initRoulettes(count);
         }
 
-        function spinWheel() {
-            const costPerSpin = 35;
-            const totalCost = costPerSpin * selectedSpinCount;
+        function initRoulettes(count) {
+            const box = document.getElementById('roulettes-box');
+            box.innerHTML = '';
+            for (let i = 0; i < count; i++) {
+                const wrapper = document.createElement('div');
+                wrapper.className = 'roulette-wrapper';
+                wrapper.innerHTML = `
+                    <div class="roulette-pointer"></div>
+                    <div class="roulette-track" id="track-${i}"></div>
+                `;
+                box.appendChild(wrapper);
+                populateTrack(`track-${i}`);
+            }
+        }
 
-            if (money < totalCost) {
-                alert(`Nie masz wystarczająco dużo pieniędzy! Potrzebujesz ${totalCost} $.`);
+        function populateTrack(trackId) {
+            const track = document.getElementById(trackId);
+            track.innerHTML = '';
+            for (let i = 0; i < 30; i++) {
+                const card = getRandomCardByRarityWeights('rare');
+                const div = document.createElement('div');
+                div.className = `wheel-card ${card.rarity}`;
+                div.innerHTML = `
+                    <div class="card-avatar">${card.icon}</div>
+                    <div class="card-name">${card.name}</div>
+                `;
+                track.appendChild(div);
+            }
+        }
+
+        function spinWheel() {
+            const cost = selectedSpinCount * 35;
+            if (money < cost) {
+                alert("Nie masz wystarczająco dużo pieniędzy na wybraną liczbę kół!");
                 return;
             }
 
-            money -= totalCost;
+            money -= cost;
             updateUI();
 
-            const spinBtn = document.getElementById('spin-btn');
-            spinBtn.disabled = true;
+            document.getElementById('spin-btn').disabled = true;
+            const wonCards = [];
+
+            let completed = 0;
+            for (let i = 0; i < selectedSpinCount; i++) {
+                const track = document.getElementById(`track-${i}`);
+                const winningCard = getRandomCardByRarityWeights('rare');
+                wonCards.push(winningCard);
+
+                // Ustaw wygraną kartę na odpowiedniej pozycji w traku
+                const cardsInTrack = track.children;
+                const targetCardDiv = cardsInTrack[22];
+                targetCardDiv.className = `wheel-card ${winningCard.rarity}`;
+                targetCardDiv.querySelector('.card-avatar').innerText = winningCard.icon;
+                targetCardDiv.querySelector('.card-name').innerText = winningCard.name;
+
+                inventory[winningCard.id]++;
+
+                const itemWidth = 78; // szerokość karty + gap
+                const offset = (22 * itemWidth) - (track.parentElement.offsetWidth / 2) + (itemWidth / 2) + (Math.random() * 20 - 10);
+
+                track.style.transition = 'transform 3.5s cubic-bezier(0.15, 0.85, 0.15, 1)';
+                track.style.transform = `translateX(-${offset}px)`;
+
+                setTimeout(() => {
+                    completed++;
+                    if (completed === selectedSpinCount) {
+                        document.getElementById('spin-btn').disabled = false;
+                        showModal(`Wynik Koła Fortuny (${selectedSpinCount}x)`, wonCards);
+                        updateUI();
+                        
+                        // Reset pozycji kół po animacji
+                        setTimeout(() => {
+                            for (let j = 0; j < selectedSpinCount; j++) {
+                                const t = document.getElementById(`track-${j}`);
+                                t.style.transition = 'none';
+                                t.style.transform = 'translateX(0px)';
+                                populateTrack(`track-${j}`);
+                            }
+                        }, 500);
+                    }
+                }, 3500);
+            }
         }
     </script>
 </body>
