@@ -844,9 +844,7 @@
             updateUI();
         }
 
-        // Zmodyfikowana funkcja losowania kart opartego na wagach (trudniejsze zdobywanie lepszych rzadkości)
         function getRandomCardByRarityWeights(packType) {
-            // Definiujemy szanse (wagę) dla poszczególnych rzadkości w zależności od paczki
             let weights = { rare: 70, epic: 20, mythic: 8, legendary: 2 };
 
             if (packType === 'epic') {
@@ -871,7 +869,6 @@
                 chosenRarity = 'legendary';
             }
 
-            // Wybieramy losową kartę z danej rzadkości
             const pool = allCards.filter(card => card.rarity === chosenRarity);
             return pool[Math.floor(Math.random() * pool.length)];
         }
@@ -951,7 +948,7 @@
             if (inventory[cardId] <= 0) return;
             const card = allCards.find(c => c.id === cardId);
             inventory[cardId]--;
-            money += Math.floor(card.value / 2); // Sprzedaż za połowę wartości
+            money += Math.floor(card.value / 2);
             updateUI();
         }
 
@@ -1098,7 +1095,6 @@
                 const winningCard = getRandomCardByRarityWeights('rare');
                 wonCards.push(winningCard);
 
-                // Ustaw wygraną kartę na odpowiedniej pozycji w traku
                 const cardsInTrack = track.children;
                 const targetCardDiv = cardsInTrack[22];
                 targetCardDiv.className = `wheel-card ${winningCard.rarity}`;
@@ -1107,7 +1103,7 @@
 
                 inventory[winningCard.id]++;
 
-                const itemWidth = 78; // szerokość karty + gap
+                const itemWidth = 78;
                 const offset = (22 * itemWidth) - (track.parentElement.offsetWidth / 2) + (itemWidth / 2) + (Math.random() * 20 - 10);
 
                 track.style.transition = 'transform 3.5s cubic-bezier(0.15, 0.85, 0.15, 1)';
@@ -1120,7 +1116,6 @@
                         showModal(`Wynik Koła Fortuny (${selectedSpinCount}x)`, wonCards);
                         updateUI();
                         
-                        // Reset pozycji kół po animacji
                         setTimeout(() => {
                             for (let j = 0; j < selectedSpinCount; j++) {
                                 const t = document.getElementById(`track-${j}`);
