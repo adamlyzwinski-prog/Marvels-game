@@ -845,14 +845,15 @@
         }
 
         function getRandomCardByRarityWeights(packType) {
-            let weights = { rare: 70, epic: 20, mythic: 8, legendary: 2 };
+            // Prawdziwe, rygorystyczne szanse (Rzadka paczka ma tylko 2% na Legendarną!)
+            let weights = { rare: 78, epic: 15, mythic: 5, legendary: 2 };
 
             if (packType === 'epic') {
-                weights = { rare: 55, epic: 30, mythic: 12, legendary: 3 };
+                weights = { rare: 60, epic: 25, mythic: 11, legendary: 4 };
             } else if (packType === 'mythic') {
-                weights = { rare: 40, epic: 35, mythic: 20, legendary: 5 };
+                weights = { rare: 45, epic: 30, mythic: 18, legendary: 7 };
             } else if (packType === 'legendary') {
-                weights = { rare: 25, epic: 40, mythic: 25, legendary: 10 };
+                weights = { rare: 30, epic: 35, mythic: 22, legendary: 13 };
             }
 
             const totalWeight = weights.rare + weights.epic + weights.mythic + weights.legendary;
@@ -884,6 +885,7 @@
             const pulledCards = [];
 
             for (let i = 0; i < pack.cardsCount; i++) {
+                // Dla rzadkiej paczki używamy dokładnie szans rzadkiej paczki
                 const card = getRandomCardByRarityWeights(pack.id);
                 inventory[card.id]++;
                 pulledCards.push(card);
