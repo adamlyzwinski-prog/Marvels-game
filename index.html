@@ -128,10 +128,10 @@
             background: transparent;
             border: none;
             color: #aaa;
-            font-size: 16px;
+            font-size: 15px;
             font-weight: bold;
             cursor: pointer;
-            padding: 8px 16px;
+            padding: 8px 14px;
             border-radius: 6px;
             transition: all 0.2s;
         }
@@ -180,34 +180,10 @@
             overflow: hidden;
         }
 
-        .pack-card::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            opacity: 0.12;
-            background-image: radial-gradient(circle, #fff 10%, transparent 10%), radial-gradient(circle, #fff 10%, transparent 10%);
-            background-size: 20px 20px;
-            background-position: 0 0, 10px 10px;
-            pointer-events: none;
-        }
-
-        .pack-card[data-pack="rare"] {
-            border-color: var(--rare);
-            background: linear-gradient(135deg, rgba(59, 130, 246, 0.3) 0%, rgba(31, 40, 51, 0.95) 100%);
-        }
-        .pack-card[data-pack="epic"] {
-            border-color: var(--epic);
-            background: linear-gradient(135deg, rgba(168, 85, 247, 0.3) 0%, rgba(31, 40, 51, 0.95) 100%);
-        }
-        .pack-card[data-pack="mythic"] {
-            border-color: var(--mythic);
-            background: linear-gradient(135deg, rgba(239, 68, 68, 0.3) 0%, rgba(31, 40, 51, 0.95) 100%);
-        }
-        .pack-card[data-pack="legendary"] {
-            border-color: var(--legendary);
-            background: linear-gradient(135deg, rgba(234, 179, 8, 0.35) 0%, rgba(31, 40, 51, 0.95) 100%);
-            box-shadow: 0 0 20px rgba(234, 179, 8, 0.4);
-        }
+        .pack-card[data-pack="rare"] { border-color: var(--rare); background: linear-gradient(135deg, rgba(59, 130, 246, 0.3) 0%, rgba(31, 40, 51, 0.95) 100%); }
+        .pack-card[data-pack="epic"] { border-color: var(--epic); background: linear-gradient(135deg, rgba(168, 85, 247, 0.3) 0%, rgba(31, 40, 51, 0.95) 100%); }
+        .pack-card[data-pack="mythic"] { border-color: var(--mythic); background: linear-gradient(135deg, rgba(239, 68, 68, 0.3) 0%, rgba(31, 40, 51, 0.95) 100%); }
+        .pack-card[data-pack="legendary"] { border-color: var(--legendary); background: linear-gradient(135deg, rgba(234, 179, 8, 0.35) 0%, rgba(31, 40, 51, 0.95) 100%); box-shadow: 0 0 20px rgba(234, 179, 8, 0.4); }
 
         .pack-card:hover {
             transform: translateY(-5px);
@@ -225,7 +201,6 @@
             transition: background 0.2s;
             margin-top: 15px;
             box-shadow: 0 4px 6px rgba(0,0,0,0.3);
-            z-index: 2;
         }
 
         .btn:hover { background: #b20710; }
@@ -376,34 +351,6 @@
         .wheel-card.mythic { border-color: var(--mythic); background: radial-gradient(circle, rgba(239,68,68,0.2) 0%, rgba(26,28,41,0.95) 100%); }
         .wheel-card.legendary { border-color: var(--legendary); background: radial-gradient(circle, rgba(234,179,8,0.25) 0%, rgba(26,28,41,0.95) 100%); box-shadow: 0 0 8px rgba(234, 179, 8, 0.4); }
 
-        .wheel-card .card-avatar {
-            width: 28px;
-            height: 28px;
-            font-size: 13px;
-            border-radius: 50%;
-            background: radial-gradient(circle, #3a4750 0%, #1f2833 100%);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            border: 1px solid rgba(255,255,255,0.2);
-            overflow: hidden;
-        }
-        
-        .wheel-card .card-avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .wheel-card .card-name {
-            font-size: 8px;
-            font-weight: bold;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            width: 100%;
-        }
-
         .deck-slots {
             display: flex;
             gap: 15px;
@@ -414,7 +361,7 @@
 
         .deck-slot {
             width: 150px;
-            height: 220px;
+            height: 230px;
             background: rgba(31, 40, 51, 0.6);
             border: 2px dashed #555;
             border-radius: 12px;
@@ -451,30 +398,17 @@
             align-items: center;
             width: 150px;
             min-width: 150px;
-            height: 220px;
+            height: 230px;
             box-sizing: border-box;
             justify-content: space-between;
             border: 4px solid #caa845;
             background-image: repeating-linear-gradient(45deg, rgba(255,215,0,0.15) 0, rgba(255,215,0,0.15) 2px, transparent 0, transparent 6px);
         }
 
-        .card.rare { 
-            border-color: var(--rare); 
-            background-image: repeating-linear-gradient(45deg, rgba(59,130,246,0.15) 0, rgba(59,130,246,0.15) 2px, transparent 0, transparent 6px);
-        }
-        .card.epic { 
-            border-color: var(--epic); 
-            background-image: repeating-linear-gradient(45deg, rgba(168,85,247,0.15) 0, rgba(168,85,247,0.15) 2px, transparent 0, transparent 6px);
-        }
-        .card.mythic { 
-            border-color: var(--mythic); 
-            background-image: repeating-linear-gradient(45deg, rgba(239,68,68,0.15) 0, rgba(239,68,68,0.15) 2px, transparent 0, transparent 6px);
-        }
-        .card.legendary { 
-            border-color: var(--legendary); 
-            background-image: repeating-linear-gradient(45deg, rgba(234,179,8,0.2) 0, rgba(234,179,8,0.2) 2px, transparent 0, transparent 6px);
-            box-shadow: 0 0 15px rgba(234, 179, 8, 0.5); 
-        }
+        .card.rare { border-color: var(--rare); background-image: repeating-linear-gradient(45deg, rgba(59,130,246,0.15) 0, rgba(59,130,246,0.15) 2px, transparent 0, transparent 6px); }
+        .card.epic { border-color: var(--epic); background-image: repeating-linear-gradient(45deg, rgba(168,85,247,0.15) 0, rgba(168,85,247,0.15) 2px, transparent 0, transparent 6px); }
+        .card.mythic { border-color: var(--mythic); background-image: repeating-linear-gradient(45deg, rgba(239,68,68,0.15) 0, rgba(239,68,68,0.15) 2px, transparent 0, transparent 6px); }
+        .card.legendary { border-color: var(--legendary); background-image: repeating-linear-gradient(45deg, rgba(234,179,8,0.2) 0, rgba(234,179,8,0.2) 2px, transparent 0, transparent 6px); box-shadow: 0 0 15px rgba(234, 179, 8, 0.5); }
 
         .card-inner-frame {
             width: 100%;
@@ -499,7 +433,6 @@
             color: #ccc;
             text-transform: uppercase;
             font-weight: bold;
-            letter-spacing: 0.5px;
         }
 
         .card-chrome-logo {
@@ -511,17 +444,16 @@
         }
 
         .card-avatar {
-            width: 65px;
-            height: 65px;
+            width: 55px;
+            height: 55px;
             border-radius: 50%;
             background: radial-gradient(circle, #3a4750 0%, #1f2833 100%);
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 32px;
+            font-size: 26px;
             border: 2px solid rgba(255,255,255,0.2);
             margin: 0 auto;
-            box-shadow: inset 0 2px 5px rgba(0,0,0,0.5);
             overflow: hidden;
         }
 
@@ -534,13 +466,11 @@
         .card-name-banner {
             background: #facc15;
             color: #111;
-            font-size: 11px;
+            font-size: 10px;
             font-weight: 900;
             text-transform: uppercase;
-            padding: 4px 6px;
+            padding: 3px 4px;
             border-radius: 4px;
-            transform: skewX(-10deg);
-            box-shadow: 0 2px 5px rgba(0,0,0,0.4);
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -552,6 +482,17 @@
         .card.mythic .card-name-banner { background: var(--mythic); color: white; }
         .card.legendary .card-name-banner { background: var(--legendary); color: #111; }
 
+        .card-stats-box {
+            display: flex;
+            justify-content: space-between;
+            font-size: 8px;
+            font-weight: bold;
+            color: #ff4d4d;
+            background: rgba(0,0,0,0.5);
+            padding: 2px 4px;
+            border-radius: 3px;
+        }
+
         .card-footer-box {
             display: flex;
             justify-content: space-between;
@@ -562,22 +503,10 @@
             border-radius: 3px;
             font-size: 8px;
             font-weight: bold;
-            text-transform: uppercase;
         }
 
-        .card-value {
-            font-size: 9px;
-            color: #fbbf24;
-            font-weight: bold;
-        }
-
-        .card-count {
-            background: rgba(255,255,255,0.2);
-            padding: 1px 5px;
-            border-radius: 8px;
-            font-size: 8px;
-            display: inline-block;
-        }
+        .card-value { color: #fbbf24; font-weight: bold; font-size: 9px; }
+        .card-count { background: rgba(255,255,255,0.2); padding: 1px 4px; border-radius: 8px; font-size: 8px; }
 
         .card.locked {
             opacity: 0.3;
@@ -587,8 +516,74 @@
             border-color: #333 !important;
         }
 
-        .card.locked .card-avatar {
-            background: #222;
+        /* Style walki i szpitala */
+        .battle-container, .hospital-container {
+            background: rgba(31, 40, 51, 0.9);
+            padding: 25px;
+            border-radius: 15px;
+            border: 2px solid #3a4750;
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+        }
+
+        .boss-card {
+            background: #151821;
+            border: 3px solid var(--accent);
+            border-radius: 12px;
+            padding: 15px;
+            margin: 15px auto;
+            max-width: 300px;
+        }
+
+        .boss-hp-bar-container {
+            background: #333;
+            border: 2px solid #555;
+            height: 24px;
+            border-radius: 4px;
+            position: relative;
+            margin: 15px 0;
+            overflow: hidden;
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.8);
+        }
+
+        .boss-hp-fill {
+            background: #ef4444;
+            height: 100%;
+            width: 100%;
+            transition: width 0.3s ease;
+        }
+
+        .boss-hp-text {
+            position: absolute;
+            width: 100%;
+            top: 0; left: 0;
+            line-height: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            color: #fff;
+            text-shadow: 1px 1px 2px #000;
+        }
+
+        .battle-log {
+            background: #111;
+            border: 1px solid #444;
+            border-radius: 8px;
+            padding: 12px;
+            height: 120px;
+            overflow-y: auto;
+            text-align: left;
+            font-size: 13px;
+            color: #ddd;
+            margin: 15px 0;
+        }
+
+        .hospital-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
         }
 
         #modal {
@@ -645,19 +640,23 @@
     </header>
 
     <nav>
-        <button class="tab-btn active" onclick="switchTab('shop')">Sklep</button>
-        <button class="tab-btn" onclick="switchTab('wheel')">Koło Fortuny</button>
-        <button class="tab-btn" onclick="switchTab('codes')">Kody</button>
-        <button class="tab-btn" onclick="switchTab('deck')">Deck</button>
-        <button class="tab-btn" onclick="switchTab('index-tab')">Indeks</button>
+        <button class="tab-btn active" onclick="switchTab('shop', event)">Sklep</button>
+        <button class="tab-btn" onclick="switchTab('wheel', event)">Koło Fortuny</button>
+        <button class="tab-btn" onclick="switchTab('codes', event)">Kody</button>
+        <button class="tab-btn" onclick="switchTab('deck', event)">Deck</button>
+        <button class="tab-btn" onclick="switchTab('battle', event)">Walka</button>
+        <button class="tab-btn" onclick="switchTab('hospital', event)">Szpital</button>
+        <button class="tab-btn" onclick="switchTab('index-tab', event)">Indeks</button>
     </nav>
 
     <main>
+        <!-- SKLEP -->
         <div id="shop" class="tab-content active">
             <h2>Kup paczki z kartami</h2>
             <div class="shop-grid" id="shop-packs"></div>
         </div>
 
+        <!-- KOŁO FORTUNY -->
         <div id="wheel" class="tab-content">
             <h2>Koło Fortuny Kart</h2>
             <div class="wheel-container">
@@ -672,6 +671,7 @@
             </div>
         </div>
 
+        <!-- KODY -->
         <div id="codes" class="tab-content">
             <h2>Kody Promocyjne</h2>
             <div class="codes-container">
@@ -681,12 +681,49 @@
             </div>
         </div>
 
+        <!-- DECK -->
         <div id="deck" class="tab-content">
             <h2>Twój Aktywny Deck (5 miejsc)</h2>
             <p>Kliknij na kartę w Indeksie, aby dodać ją do wolnego slotu w Decku.</p>
             <div class="deck-slots" id="deck-slots-container"></div>
         </div>
 
+        <!-- WALKA -->
+        <div id="battle" class="tab-content">
+            <h2>Arena Walk z Bossami</h2>
+            <div class="battle-container">
+                <div id="boss-selection">
+                    <p>Wybierz przeciwnika do walki:</p>
+                    <button class="btn" onclick="startBattle('weak')">Słaby Boss (Nagroda: 50 $)</button>
+                    <button class="btn" onclick="startBattle('good')">Dobry Boss (Nagroda: 120 $)</button>
+                    <button class="btn" onclick="startBattle('mythic')">Mityczny Boss (Nagroda: 300 $)</button>
+                    <button class="btn" onclick="startBattle('legendary')">Legendarny Boss (Nagroda: 750 $)</button>
+                </div>
+
+                <div id="battle-arena" style="display: none;">
+                    <h3 id="boss-name-display">Boss</h3>
+                    <div class="boss-card">
+                        <div class="boss-hp-bar-container">
+                            <div class="boss-hp-fill" id="boss-hp-fill"></div>
+                            <div class="boss-hp-text" id="boss-hp-text">HP: 100/100</div>
+                        </div>
+                    </div>
+                    <div class="battle-log" id="battle-log">Rozpoczęto bitwę! Wybierz postać ze swojego decku, aby zaatakować.</div>
+                    <h4>Wybierz bohatera do ataku:</h4>
+                    <div class="deck-slots" id="battle-deck-container"></div>
+                    <button class="btn" style="background:#444;" onclick="endBattle()">Uciekaj z walki</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- SZPITAL -->
+        <div id="hospital" class="tab-content">
+            <h2>Szpital Bohaterów</h2>
+            <p>Tutaj leczy się rannych bohaterów. Jeśli karta straci całe HP, ginie na stałe!</p>
+            <div class="hospital-grid" id="hospital-grid"></div>
+        </div>
+
+        <!-- INDEKS -->
         <div id="index-tab" class="tab-content">
             <h2>Indeks Wszystkich Kart Marvela</h2>
             <p>Możesz tutaj dodawać karty do Decku lub je sprzedawać za gotówkę.</p>
@@ -704,90 +741,18 @@
 
     <script>
         const allCards = [
-            { 
-                id: 'r1', 
-                name: 'Iron Man', 
-                rarity: 'rare', 
-                value: 10, 
-                icon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRyB9F4FOOGkZUCe0wOhSr5qskIYHp3VElpmRlqqSxkyA&s=10'
-            },
-            { 
-                id: 'r2', 
-                name: 'Captain America', 
-                rarity: 'rare', 
-                value: 10, 
-                icon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTl4rkbcRk2UHCPe-8FcmvsXjqhX-mY9NST76-UVxDHCA&s=10'
-            },
-            { 
-                id: 'r3', 
-                name: 'Thor', 
-                rarity: 'rare', 
-                value: 10, 
-                icon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTbRSyZsUpUu6uS226SvBI-2vbZbEJ0zIzE4EJZJMfjNA&s=10'
-            },
-            { 
-                id: 'r4', 
-                name: 'Hulk', 
-                rarity: 'rare', 
-                value: 10, 
-                icon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4B9qRFoW4m4az9T1eHNKl0XCTFYTbK35mknfZr9hq1A&s=10'
-            },
-            { 
-                id: 'r5', 
-                name: 'Black Widow', 
-                rarity: 'rare', 
-                value: 10, 
-                icon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSijMqiSlfHYnL8yT1cEu-E32-JWxIJCdVeAZ_W90Lolw&s=10'
-            },
-            { 
-                id: 'e1', 
-                name: 'Spider-Man', 
-                rarity: 'epic', 
-                value: 30, 
-                icon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7CGjY7av_plbmmDBBoKf-GTESNzLi_8tcWYtEKOgchA&s=10'
-            },
-            { 
-                id: 'e2', 
-                name: 'Doctor Strange', 
-                rarity: 'epic', 
-                value: 30, 
-                icon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTop9O7TI2mXvI10Eu-tQiFfD4OosMxV0UrqZD0VU34VQ&s=10'
-            },
-            { 
-                id: 'e3', 
-                name: 'Scarlet Witch', 
-                rarity: 'epic', 
-                value: 30, 
-                icon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQY6b_wgc6oIVcmqJNhe9VhBCPmNZ7tFKLYkvpFuI3Ozw&s=10'
-            },
-            { 
-                id: 'm1', 
-                name: 'Thanos', 
-                rarity: 'mythic', 
-                value: 50, 
-                icon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTKtoq36UKoWKx0TROx2tR4xtEFcVIz5xrRTJ5LiRpnZQ&s=10'
-            },
-            { 
-                id: 'm2', 
-                name: 'Silver Surfer', 
-                rarity: 'mythic', 
-                value: 50, 
-                icon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTjl7Zq8SPbwK0Rkr037bW7fzeDMotI49YawV21w7MPrw&s=10'
-            },
-            { 
-                id: 'l1', 
-                name: 'Stan Lee', 
-                rarity: 'legendary', 
-                value: 100, 
-                icon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRBTJNpDVkCWrVEAs84GzXExWbYgcUFTUFBF8qGQygb7Q&s=10'
-            },
-            { 
-                id: 'l2', 
-                name: 'Galactus', 
-                rarity: 'legendary', 
-                value: 100, 
-                icon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQZxVrvJ7ImhkVEMWsJ5X8jNQNWoOQvvxXCHbri7ExLQ&s=10'
-            }
+            { id: 'r1', name: 'Iron Man', rarity: 'rare', value: 10, hp: 60, maxHp: 60, attack: 15, icon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRyB9F4FOOGkZUCe0wOhSr5qskIYHp3VElpmRlqqSxkyA&s=10' },
+            { id: 'r2', name: 'Captain America', rarity: 'rare', value: 10, hp: 70, maxHp: 70, attack: 12, icon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTl4rkbcRk2UHCPe-8FcmvsXjqhX-mY9NST76-UVxDHCA&s=10' },
+            { id: 'r3', name: 'Thor', rarity: 'rare', value: 10, hp: 65, maxHp: 65, attack: 18, icon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTbRSyZsUpUu6uS226SvBI-2vbZbEJ0zIzE4EJZJMfjNA&s=10' },
+            { id: 'r4', name: 'Hulk', rarity: 'rare', value: 10, hp: 90, maxHp: 90, attack: 14, icon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4B9qRFoW4m4az9T1eHNKl0XCTFYTbK35mknfZr9hq1A&s=10' },
+            { id: 'r5', name: 'Black Widow', rarity: 'rare', value: 10, hp: 50, maxHp: 50, attack: 16, icon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSijMqiSlfHYnL8yT1cEu-E32-JWxIJCdVeAZ_W90Lolw&s=10' },
+            { id: 'e1', name: 'Spider-Man', rarity: 'epic', value: 30, hp: 100, maxHp: 100, attack: 25, icon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7CGjY7av_plbmmDBBoKf-GTESNzLi_8tcWYtEKOgchA&s=10' },
+            { id: 'e2', name: 'Doctor Strange', rarity: 'epic', value: 30, hp: 90, maxHp: 90, attack: 28, icon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTop9O7TI2mXvI10Eu-tQiFfD4OosMxV0UrqZD0VU34VQ&s=10' },
+            { id: 'e3', name: 'Scarlet Witch', rarity: 'epic', value: 30, hp: 85, maxHp: 85, attack: 32, icon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQY6b_wgc6oIVcmqJNhe9VhBCPmNZ7tFKLYkvpFuI3Ozw&s=10' },
+            { id: 'm1', name: 'Thanos', rarity: 'mythic', value: 50, hp: 160, maxHp: 160, attack: 45, icon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTKtoq36UKoWKx0TROx2tR4xtEFcVIz5xrRTJ5LiRpnZQ&s=10' },
+            { id: 'm2', name: 'Silver Surfer', rarity: 'mythic', value: 50, hp: 140, maxHp: 140, attack: 42, icon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTjl7Zq8SPbwK0Rkr037bW7fzeDMotI49YawV21w7MPrw&s=10' },
+            { id: 'l1', name: 'Stan Lee', rarity: 'legendary', value: 100, hp: 250, maxHp: 250, attack: 70, icon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRBTJNpDVkCWrVEAs84GzXExWbYgcUFTUFBF8qGQygb7Q&s=10' },
+            { id: 'l2', name: 'Galactus', rarity: 'legendary', value: 100, hp: 300, maxHp: 300, attack: 85, icon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQZxVrvJ7ImhkVEMWsJ5X8jNQNWoOQvvxXCHbri7ExLQ&s=10' }
         ];
 
         const packs = [
@@ -800,18 +765,25 @@
         let currentUser = null;
         let money = 350;
         let inventory = {}; 
+        let cardHp = {}; // Aktualne HP każdej karty
         let activeDeck = [null, null, null, null, null];
         let lastDailyClaim = 0;
         let selectedSpinCount = 1;
         let usedCodes = [];
 
-        allCards.forEach(card => { inventory[card.id] = 0; });
+        // Stan walki
+        let currentBoss = null;
 
-        function switchTab(tabId) {
+        allCards.forEach(card => {
+            inventory[card.id] = 0;
+            cardHp[card.id] = card.maxHp;
+        });
+
+        function switchTab(tabId, event) {
             document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
             document.getElementById(tabId).classList.add('active');
-            event.target.classList.add('active');
+            if (event) event.target.classList.add('active');
         }
 
         function handleLogin() {
@@ -833,6 +805,7 @@
                 const data = usersDb[username];
                 money = data.money;
                 inventory = data.inventory;
+                cardHp = data.cardHp || {};
                 activeDeck = data.activeDeck;
                 lastDailyClaim = data.lastDailyClaim || 0;
                 usedCodes = data.usedCodes || [];
@@ -841,19 +814,21 @@
                     password: password,
                     money: 350,
                     inventory: { ...inventory },
+                    cardHp: { ...cardHp },
                     activeDeck: [null, null, null, null, null],
                     lastDailyClaim: 0,
                     usedCodes: []
                 };
                 localStorage.setItem('marvel_users_db', JSON.stringify(usersDb));
-                money = 350;
-                allCards.forEach(card => { inventory[card.id] = 0; });
-                activeDeck = [null, null, null, null, null];
-                lastDailyClaim = 0;
-                usedCodes = [];
             }
 
+            // Upewnij się, że każda karta ma wpis HP
+            allCards.forEach(c => {
+                if (cardHp[c.id] === undefined) cardHp[c.id] = c.maxHp;
+            });
+
             currentUser = username;
+            document.getElementById('logged-user-display.innerText') || '';
             document.getElementById('logged-user-display').innerText = `(${currentUser})`;
             document.getElementById('auth-overlay').style.display = 'none';
             
@@ -868,6 +843,7 @@
                 password: usersDb[currentUser].password,
                 money: money,
                 inventory: inventory,
+                cardHp: cardHp,
                 activeDeck: activeDeck,
                 lastDailyClaim: lastDailyClaim,
                 usedCodes: usedCodes
@@ -880,6 +856,7 @@
             renderShop();
             renderCollection();
             renderDeck();
+            renderHospital();
             saveUserData();
         }
 
@@ -899,46 +876,32 @@
             const codeInput = document.getElementById('promo-code-input');
             const code = codeInput.value.trim();
 
-            if (!code) {
-                alert("Wpisz kod!");
-                return;
-            }
-
-            if (usedCodes.includes(code)) {
-                alert("Ten kod został już przez Ciebie wykorzystany!");
-                return;
-            }
+            if (!code) { alert("Wpisz kod!"); return; }
+            if (usedCodes.includes(code)) { alert("Ten kod został już wykorzystany!"); return; }
 
             if (code === "2026") {
-                money += 25;
-                usedCodes.push(code);
-                alert("Sukces! Otrzymałeś 25 $ za kod '2026'!");
+                money += 25; usedCodes.push(code); alert("Otrzymałeś 25 $!");
             } else if (code === "-+=") {
-                money += 10000;
-                usedCodes.push(code);
-                alert("Sukces! Otrzymałeś 10 000 $ za kod '-+='!");
+                money += 10000; usedCodes.push(code); alert("Otrzymałeś 10 000 $!");
             } else if (code === "TWÓRCAXYZ") {
-                money += 1000;
-                usedCodes.push(code);
-                alert("Sukces! Otrzymałeś 1000 $ za kod 'TWÓRCAXYZ'!");
+                money += 1000; usedCodes.push(code); alert("Otrzymałeś 1000 $!");
             } else {
-                alert("Nieprawidłowy kod!");
-                return;
+                alert("Nieprawidłowy kod!"); return;
             }
-
             codeInput.value = "";
             updateUI();
         }
 
+        // System losowania z wagami i ~5% na legendę w legendarnej paczce
         function getRandomCardByRarityWeights(packType) {
-            let weights = { rare: 78, epic: 15, mythic: 5, legendary: 2 };
+            let weights = { rare: 85, epic: 12, mythic: 2.5, legendary: 0.5 };
 
             if (packType === 'epic') {
-                weights = { rare: 60, epic: 25, mythic: 11, legendary: 4 };
+                weights = { rare: 70, epic: 22, mythic: 6.5, legendary: 1.5 };
             } else if (packType === 'mythic') {
-                weights = { rare: 45, epic: 30, mythic: 18, legendary: 7 };
+                weights = { rare: 55, epic: 30, mythic: 11, legendary: 4 };
             } else if (packType === 'legendary') {
-                weights = { rare: 30, epic: 35, mythic: 22, legendary: 13 };
+                weights = { rare: 40, epic: 38, mythic: 17, legendary: 5 };
             }
 
             const totalWeight = weights.rare + weights.epic + weights.mythic + weights.legendary;
@@ -961,9 +924,7 @@
 
         function openPack(packId) {
             const pack = packs.find(p => p.id === packId);
-            if (!pack) return;
-
-            if (money < pack.price) {
+            if (!pack || money < pack.price) {
                 alert("Nie masz wystarczająco dużo pieniędzy!");
                 return;
             }
@@ -973,6 +934,9 @@
             for (let i = 0; i < pack.cardsCount; i++) {
                 let card = getRandomCardByRarityWeights(packId);
                 inventory[card.id]++;
+                if (cardHp[card.id] === undefined || cardHp[card.id] <= 0) {
+                    cardHp[card.id] = card.maxHp;
+                }
                 pulled.push(card);
             }
 
@@ -1002,6 +966,7 @@
             grid.innerHTML = '';
             allCards.forEach(card => {
                 const count = inventory[card.id] || 0;
+                const hp = cardHp[card.id] !== undefined ? cardHp[card.id] : card.maxHp;
                 const cardDiv = document.createElement('div');
                 cardDiv.className = `card ${card.rarity} ${count === 0 ? 'locked' : ''}`;
                 
@@ -1015,8 +980,12 @@
                             ${count > 0 ? `<img src="${card.icon}" alt="${card.name}">` : '❓'}
                         </div>
                         <div class="card-name-banner">${card.name}</div>
+                        <div class="card-stats-box">
+                            <span>❤️ ${hp}/${card.maxHp}</span>
+                            <span>⚔️ ${card.attack}</span>
+                        </div>
                         <div class="card-footer-box">
-                            <span class="card-value">Wartość: ${card.value} $</span>
+                            <span class="card-value">${card.value} $</span>
                             <span class="card-count">x${count}</span>
                         </div>
                     </div>
@@ -1031,6 +1000,9 @@
                 inventory[cardId]--;
                 const card = allCards.find(c => c.id === cardId);
                 money += card.value / 2;
+                if (inventory[cardId] === 0) {
+                    activeDeck = activeDeck.map(id => id === cardId ? null : id);
+                }
                 updateUI();
             }
         }
@@ -1039,6 +1011,11 @@
             const count = inventory[cardId] || 0;
             if (count === 0) return;
 
+            if (activeDeck.includes(cardId)) {
+                alert("Ta karta jest już w decku!");
+                return;
+            }
+
             for (let i = 0; i < activeDeck.length; i++) {
                 if (activeDeck[i] === null) {
                     activeDeck[i] = cardId;
@@ -1046,7 +1023,7 @@
                     return;
                 }
             }
-            alert("Twój deck jest pełny! Usuń najpierw jakąś kartę z decku.");
+            alert("Twój deck jest pełny!");
         }
 
         function renderDeck() {
@@ -1057,12 +1034,14 @@
                 slot.className = `deck-slot ${cardId ? 'filled' : ''}`;
                 if (cardId) {
                     const card = allCards.find(c => c.id === cardId);
+                    const hp = cardHp[card.id];
                     slot.className += ` ${card.rarity}`;
                     slot.innerHTML = `
                         <div class="card-inner-frame" style="width:100%; height:100%;">
                             <div class="card-top-bar"><span>Slot ${index+1}</span></div>
                             <div class="card-avatar" style="width:45px; height:45px;"><img src="${card.icon}" alt="${card.name}"></div>
                             <div class="card-name-banner">${card.name}</div>
+                            <div class="card-stats-box"><span>❤️ ${hp}</span><span>⚔️ ${card.attack}</span></div>
                             <button class="btn btn-sell" onclick="removeFromDeck(${index})">Usuń</button>
                         </div>
                     `;
@@ -1078,6 +1057,188 @@
             updateUI();
         }
 
+        // --- SZPITAL ---
+        function renderHospital() {
+            const grid = document.getElementById('hospital-grid');
+            grid.innerHTML = '';
+            let hasPatients = false;
+
+            allCards.forEach(card => {
+                const count = inventory[card.id] || 0;
+                if (count > 0) {
+                    const hp = cardHp[card.id];
+                    if (hp < card.maxHp) {
+                        hasPatients = true;
+                        const healCost = Math.floor((card.maxHp - hp) * 0.5) + 5;
+                        const cardDiv = document.createElement('div');
+                        cardDiv.className = `card ${card.rarity}`;
+                        cardDiv.innerHTML = `
+                            <div class="card-inner-frame">
+                                <div class="card-top-bar"><span>SZPITAL</span></div>
+                                <div class="card-avatar"><img src="${card.icon}" alt=""></div>
+                                <div class="card-name-banner">${card.name}</div>
+                                <div class="card-stats-box" style="color:#ef4444;"><span>❤️ ${hp}/${card.maxHp}</span></div>
+                                <button class="btn btn-sell" onclick="healCard('${card.id}', ${healCost})">Ulecz (${healCost} $)</button>
+                            </div>
+                        `;
+                        grid.appendChild(cardDiv);
+                    }
+                }
+            });
+
+            if (!hasPatients) {
+                grid.innerHTML = `<p style="grid-column: 1/-1; color: #aaa;">Wszyscy bohaterowie są zdrowi!</p>`;
+            }
+        }
+
+        function healCard(cardId, cost) {
+            if (money < cost) {
+                alert("Nie masz wystarczająco dużo pieniędzy na leczenie!");
+                return;
+            }
+            money -= cost;
+            const card = allCards.find(c => c.id === cardId);
+            cardHp[cardId] = card.maxHp;
+            updateUI();
+            alert("Bohater został w pełni uleczony!");
+        }
+
+        // --- WALKA Z BOSSAMI ---
+        const bosses = {
+            weak: { name: 'Słaby Goblin Boss', hp: 80, maxHp: 80, attack: 10, reward: 50 },
+            good: { name: 'Opancerzony Najemnik', hp: 150, maxHp: 150, attack: 22, reward: 120 },
+            mythic: { name: 'Wielki Lord Ciemności', hp: 300, maxHp: 300, attack: 40, reward: 300 },
+            legendary: { name: 'Kosmiczny Tytan', hp: 500, maxHp: 500, attack: 65, reward: 750 }
+        };
+
+        function startBattle(type) {
+            // Sprawdź czy deck ma żywe karty
+            const deckCards = activeDeck.filter(id => id !== null);
+            if (deckCards.length === 0) {
+                alert("Twój deck jest pusty! Dodaj karty z indeksu przed walką.");
+                return;
+            }
+            const hasAlive = deckCards.some(id => cardHp[id] > 0);
+            if (!hasAlive) {
+                alert("Wszystkie karty w Twoim decku są nieprzytomne! Wylecz je w szpitalu.");
+                return;
+            }
+
+            const template = bosses[type];
+            currentBoss = { ...template };
+
+            document.getElementById('boss-selection').style.display = 'none';
+            document.getElementById('battle-arena').style.display = 'block';
+            document.getElementById('boss-name-display').innerText = currentBoss.name;
+            
+            logMessage(`Pojawił się przeciwnik: ${currentBoss.name}! Wybierz kartę z decku, aby zaatakować.`);
+            updateBattleUI();
+        }
+
+        function updateBattleUI() {
+            // Pasek HP bossa w stylu Minecraftowym
+            const percent = Math.max(0, (currentBoss.hp / currentBoss.maxHp) * 100);
+            document.getElementById('boss-hp-fill').style.width = percent + '%';
+            document.getElementById('boss-hp-text.innerText') || '';
+            document.getElementById('boss-hp-text').innerText = `HP: ${Math.max(0, currentBoss.hp)}/${currentBoss.maxHp}`;
+
+            // Renderuj deck w oknie walki
+            const container = document.getElementById('battle-deck-container');
+            container.innerHTML = '';
+            activeDeck.forEach((cardId, index) => {
+                const slot = document.createElement('div');
+                slot.className = `deck-slot ${cardId ? 'filled' : ''}`;
+                if (cardId) {
+                    const card = allCards.find(c => c.id === cardId);
+                    const hp = cardHp[cardId];
+                    const isDead = hp <= 0;
+                    slot.className += ` ${card.rarity} ${isDead ? 'locked' : ''}`;
+                    slot.innerHTML = `
+                        <div class="card-inner-frame" style="width:100%; height:100%;">
+                            <div class="card-top-bar"><span>Slot ${index+1}</span></div>
+                            <div class="card-avatar" style="width:40px; height:40px;"><img src="${card.icon}" alt=""></div>
+                            <div class="card-name-banner">${card.name}</div>
+                            <div class="card-stats-box"><span>❤️ ${hp}</span><span>⚔️ ${card.attack}</span></div>
+                            ${!isDead ? `<button class="btn btn-sell" onclick="playerAttack('${cardId}')">Atakuj</button>` : '<span style="color:red; font-size:10px;">MARTWY</span>'}
+                        </div>
+                    `;
+                } else {
+                    slot.innerHTML = `<span style="color: #777; font-size:11px;">Puste</span>`;
+                }
+                container.appendChild(slot);
+            });
+        }
+
+        function playerAttack(cardId) {
+            if (currentBoss.hp <= 0) return;
+
+            const card = allCards.find(c => c.id === cardId);
+            currentBoss.hp -= card.attack;
+            logMessage(`${card.name} zadaje ${card.attack} pkt. obrażeń bossowi!`);
+
+            if (currentBoss.hp <= 0) {
+                logMessage(`Zwycięstwo! Pokonałeś bossa i zdobywasz ${currentBoss.reward} $!`);
+                money += currentBoss.reward;
+                updateUI();
+                setTimeout(() => {
+                    endBattle();
+                    alert(`Wygrana! Otrzymano ${currentBoss.reward} $!`);
+                }, 500);
+                return;
+            }
+
+            // Tura bossa: sam wybiera losową żywą kartę z decku gracza
+            setTimeout(() => {
+                bossTurn();
+            }, 600);
+
+            updateBattleUI();
+        }
+
+        function bossTurn() {
+            const aliveDeckCards = activeDeck.filter(id => id !== null && cardHp[id] > 0);
+            if (aliveDeckCards.length === 0) {
+                logMessage("Wszystkie Twoje karty poległy w walce!");
+                setTimeout(() => {
+                    endBattle();
+                    alert("Przegrana! Twoje karty zostały pokonane.");
+                }, 500);
+                return;
+            }
+
+            const randomCardId = aliveDeckCards[Math.floor(Math.random() * aliveDeckCards.length)];
+            const targetCard = allCards.find(c => c.id === randomCardId);
+
+            cardHp[randomCardId] -= currentBoss.attack;
+            if (cardHp[randomCardId] < 0) cardHp[randomCardId] = 0;
+
+            logMessage(`${currentBoss.name} kontratakuje i zadaje ${currentBoss.attack} obrażeń postać ${targetCard.name}!`);
+
+            if (cardHp[randomCardId] === 0) {
+                logMessage(`⚠️ ${targetCard.name} stracił całe HP i zginął na stałe!`);
+                inventory[randomCardId]--;
+                activeDeck = activeDeck.map(id => id === randomCardId ? null : id);
+            }
+
+            updateUI();
+            updateBattleUI();
+        }
+
+        function logMessage(text) {
+            const log = document.getElementById('battle-log');
+            log.innerHTML += `<div>> ${text}</div>`;
+            log.scrollTop = log.scrollHeight;
+        }
+
+        function endBattle() {
+            currentBoss = null;
+            document.getElementById('boss-selection').style.display = 'block';
+            document.getElementById('battle-arena').style.display = 'none';
+            document.getElementById('battle-log').innerHTML = '';
+            updateUI();
+        }
+
+        // --- KOŁO FORTUNY ---
         function setSpinCount(count) {
             selectedSpinCount = count;
             document.querySelectorAll('.spin-btn-option').forEach(btn => btn.classList.remove('selected'));
@@ -1108,7 +1269,7 @@
                 const cardDiv = document.createElement('div');
                 cardDiv.className = `wheel-card ${randomCard.rarity}`;
                 cardDiv.innerHTML = `
-                    <div class="card-avatar"><img src="${randomCard.icon}" alt="${randomCard.name}"></div>
+                    <div class="card-avatar"><img src="${randomCard.icon}" alt=""></div>
                     <div class="card-name">${randomCard.name}</div>
                 `;
                 track.appendChild(cardDiv);
@@ -1118,21 +1279,21 @@
         function spinWheel() {
             const cost = selectedSpinCount * 35;
             if (money < cost) {
-                alert("Nie masz wystarczająco dużo pieniędzy na te koła!");
+                alert("Za mało pieniędzy!");
                 return;
             }
 
             money -= cost;
             updateUI();
-
             document.getElementById('spin-btn').disabled = true;
             let finishedCount = 0;
             let pulled = [];
 
             for (let i = 0; i < selectedSpinCount; i++) {
                 const track = document.getElementById(`track-${i}`);
-                const winningCard = getRandomCardByRarityWeights('epic');
+                const winningCard = getRandomCardByRarityWeights('rare');
                 inventory[winningCard.id]++;
+                if (cardHp[winningCard.id] <= 0) cardHp[winningCard.id] = winningCard.maxHp;
                 pulled.push(winningCard);
 
                 const cardDivs = track.children;
@@ -1172,13 +1333,10 @@
                             <span>ID: ${card.id}</span>
                             <span class="card-chrome-logo">MARVEL</span>
                         </div>
-                        <div class="card-avatar">
-                            <img src="${card.icon}" alt="${card.name}">
-                        </div>
+                        <div class="card-avatar"><img src="${card.icon}" alt=""></div>
                         <div class="card-name-banner">${card.name}</div>
-                        <div class="card-footer-box">
-                            <span class="card-value">Wartość: ${card.value} $</span>
-                        </div>
+                        <div class="card-stats-box"><span>❤️ ${card.maxHp}</span><span>⚔️ ${card.attack}</span></div>
+                        <div class="card-footer-box"><span class="card-value">${card.value} $</span></div>
                     </div>
                 `;
                 container.appendChild(cardDiv);
