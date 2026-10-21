@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <title>Marvel Card Game</title>
     <style>
-        /* Podstawowe style i wygląd gry */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #121212;
@@ -146,7 +145,7 @@
         }
         .deck-slot {
             width: 130px;
-            height: 180px;
+            height: 190px;
             background: #222;
             border: 2px dashed #444;
             border-radius: 6px;
@@ -281,7 +280,7 @@
         <button class="btn" id="spin-btn" onclick="spinWheel()">Zakręć!</button>
     </div>
 
-    <!-- 3. INDEKS (KOLEKCJA) -->
+    <!-- 3. INDEKS -->
     <div class="section">
         <h2>3. Indeks / Kolekcja Kart</h2>
         <div id="collection-grid" class="grid"></div>
@@ -297,7 +296,7 @@
     <div class="section">
         <h2>5. Arena Walki z Bossami</h2>
         <div id="boss-selection">
-            <p>Wybierz przeciwnika:</p>
+            <p>Wybierz przeciwnika (Uwaga: przegrana lub śmierć karty w walce oznacza jej utratę na zawsze!):</p>
             <button class="btn" onclick="startBattle('weak')">Słaby Goblin Boss</button>
             <button class="btn" onclick="startBattle('good')">Opancerzony Najemnik</button>
             <button class="btn" onclick="startBattle('mythic')">Wielki Lord Ciemności</button>
@@ -339,7 +338,6 @@
     </div>
 
     <script>
-        // Przykładowe dane i zmienne globalne (dla pełnej spójności kodu)
         let currentUser = "Gracz1";
         let money = 1000;
         let lastDailyClaim = 0;
@@ -699,7 +697,7 @@
                             <div class="minecraft-hp-bar" style="height:6px;"><div class="minecraft-hp-fill" style="width: ${(hp/card.maxHp)*100}%;"></div></div>
 
                             <div class="card-stats-box"><span>⚔️ ${card.attack}</span></div>
-                            ${!isDead ? `<button class="btn btn-sell" onclick="playerAttack('${cardId}')">Atakuj</button>` : '<span style="color:red; font-size:10px;">MARTWY</span>'}
+                            ${!isDead ? `<button class="btn btn-sell" onclick="playerAttack('${cardId}')">Atakuj</button>` : '<span style="color:red; font-size:10px;">UTRACONA</span>'}
                         </div>
                     `;
                 } else {
@@ -754,7 +752,7 @@
             logMessage(`${currentBoss.name} kontratakuje i zadaje ${currentBoss.attack} obrażeń postać ${targetCard.name}!`);
 
             if (cardHp[randomCardId] === 0) {
-                logMessage(`⚠️ ${targetCard.name} stracił całe HP i zginął!`);
+                logMessage(`⚠️ ${targetCard.name} stracił całe HP i zginął! Karta została utracona na zawsze.`);
                 inventory[randomCardId]--;
                 activeDeck = activeDeck.map(id => id === randomCardId ? null : id);
             }
