@@ -33,7 +33,9 @@ header{background:#1f2833f2;padding:15px 25px;display:flex;justify-content:space
 </main>
 <div id="modal"><div class="modal-content"><h3 id="modal-title">Zawartość</h3><div id="pulled-cards-container" class="pulled-cards"></div><button onclick="closeModal()">Super!</button></div></div>
 <script>
-  window.alert = function() {};
+window.alert = function() {};
+window.confirm = function() { return true; };
+window.prompt = function() { return null; };
 const allCards=[
 {id:'r1',name:'Iron Man',rarity:'rare',value:10,hp:60,maxHp:60,attack:15,icon:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRyB9F4FOOGkZUCe0wOhSr5qskIYHp3VElpmRlqqSxkyA&s=10'},
 {id:'r2',name:'Captain America',rarity:'rare',value:10,hp:70,maxHp:70,attack:12,icon:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTl4rkbcRk2UHCPe-8FcmvsXjqhX-mY9NST76-UVxDHCA&s=10'},
