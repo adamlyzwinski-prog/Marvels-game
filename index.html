@@ -14,13 +14,55 @@
         h1, h2, h3 {
             color: #ffffff;
         }
+        /* Górny panel */
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #1e1e1e;
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+        /* Menu nawigacyjne */
+        .nav-menu {
+            display: flex;
+            gap: 10px;
+            background: #1e1e1e;
+            padding: 10px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+        .nav-btn {
+            background: transparent;
+            border: none;
+            color: #aaa;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            padding: 8px 12px;
+            border-radius: 4px;
+            transition: 0.2s;
+        }
+        .nav-btn:hover, .nav-btn.active {
+            background: #e50914;
+            color: white;
+        }
+
         .section {
             background: #1e1e1e;
             border-radius: 8px;
             padding: 20px;
             margin-bottom: 20px;
             box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            display: none; /* Domyślnie ukryte, sterowane przez menu */
         }
+        .section.active {
+            display: block;
+        }
+
         .btn {
             background-color: #e50914;
             color: white;
@@ -231,7 +273,7 @@
             border-color: #ff4d4f;
         }
 
-        /* Modal */
+        /* Modal ogólny (np. paczki / koło) */
         #modal {
             display: none;
             position: fixed;
@@ -249,28 +291,89 @@
             width: 100%;
             text-align: center;
         }
+
+        /* Modal logowania z obrazka */
+        #login-modal {
+            display: flex;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85);
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+        }
+        .login-box {
+            background: #181c24;
+            border: 2px solid #e50914;
+            padding: 30px;
+            border-radius: 12px;
+            width: 380px;
+            text-align: center;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.5);
+        }
+        .login-box h2 {
+            margin-bottom: 10px;
+            color: #fff;
+        }
+        .login-box p {
+            font-size: 12px;
+            color: #aaa;
+            margin-bottom: 20px;
+        }
+        .login-input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            background: #111;
+            border: 1px solid #333;
+            border-radius: 6px;
+            color: #fff;
+            box-sizing: border-box;
+        }
     </style>
 </head>
 <body>
 
-    <div style="display: flex; justify-content: space-between; align-items: center;" class="section">
-        <h1>Marvel Card Game</h1>
-        <div>
-            <span>Zalogowany: <strong id="current-user-display">-</strong></span> | 
-            <span>Pieniądze: <strong id="money">0</strong> $</span>
-            <button class="btn" onclick="claimDaily()">Odbierz Daily</button>
+    <!-- OKNO LOGOWANIA (STARTOWE) -->
+    <div id="login-modal">
+        <div class="login-box">
+            <h2>Logowanie do gry</h2>
+            <p>Wpisz login i hasło (nowe konto utworzy się automatycznie)</p>
+            <input type="text" id="login-user" class="login-input" placeholder="Login...">
+            <input type="password" id="login-pass" class="login-input" placeholder="Hasło...">
+            <button class="btn" style="width: 100%; padding: 10px;" onclick="handleLogin()">Zaloguj się</button>
         </div>
     </div>
 
+    <!-- GÓRNY PASEK -->
+    <div class="top-bar">
+        <h1 style="margin:0; font-size: 20px; color: #e50914;">MARVEL CARD GAME ()</h1>
+        <div>
+            <button class="btn" style="background: #222; border: 1px solid #444;" onclick="claimDaily()">Codzienna Nagroda (+150 $)</button>
+            <span style="margin-left: 15px; font-weight: bold;">Budżet: <span id="money" style="color: #22c55e;">0</span> $</span>
+        </div>
+    </div>
+
+    <!-- MENU NAWIGACYJNE (W KOLEJNOŚCI Z OBRAZKA) -->
+    <div class="nav-menu">
+        <button class="nav-btn active" onclick="switchTab('shop', this)">Sklep</button>
+        <button class="nav-btn" onclick="switchTab('wheel', this)">Koło Fortuny</button>
+        <button class="nav-btn" onclick="switchTab('codes', this)">Kody</button>
+        <button class="nav-btn" onclick="switchTab('deck', this)">Deck</button>
+        <button class="nav-btn" onclick="switchTab('indeks', this)">Indeks</button>
+        <button class="nav-btn" onclick="switchTab('walka', this)">Walka</button>
+        <button class="nav-btn" onclick="switchTab('szpital', this)">Szpital</button>
+    </div>
+
     <!-- 1. SKLEP -->
-    <div class="section">
-        <h2>1. Sklep (Paczki)</h2>
+    <div id="tab-shop" class="section active">
+        <h2>Kup paczki z kartami</h2>
         <div id="shop-packs" class="grid"></div>
     </div>
 
     <!-- 2. KOŁO FORTUNY -->
-    <div class="section">
-        <h2>2. Koło Fortuny</h2>
+    <div id="tab-wheel" class="section">
+        <h2>Koło Fortuny</h2>
         <div class="spin-options">
             <button class="spin-btn-option selected" id="spin-count-1" onclick="setSpinCount(1)">1 Los (35 $)</button>
             <button class="spin-btn-option" id="spin-count-3" onclick="setSpinCount(3)">3 Losy (105 $)</button>
@@ -280,21 +383,28 @@
         <button class="btn" id="spin-btn" onclick="spinWheel()">Zakręć!</button>
     </div>
 
-    <!-- 3. INDEKS -->
-    <div class="section">
-        <h2>3. Indeks / Kolekcja Kart</h2>
-        <div id="collection-grid" class="grid"></div>
+    <!-- 3. KODY -->
+    <div id="tab-codes" class="section">
+        <h2>Kody Promocyjne</h2>
+        <input type="text" id="promo-code-input" placeholder="Wpisz kod..." style="padding: 6px; border-radius: 4px; border: 1px solid #444; background: #222; color: #fff;">
+        <button class="btn" onclick="redeemCode()">Użyj kodu</button>
     </div>
 
     <!-- 4. DECK -->
-    <div class="section">
-        <h2>4. Twój Aktywny Deck</h2>
+    <div id="tab-deck" class="section">
+        <h2>Twój Aktywny Deck</h2>
         <div id="deck-slots-container" class="deck-slots"></div>
     </div>
 
-    <!-- 5. WALKA -->
-    <div class="section">
-        <h2>5. Arena Walki z Bossami</h2>
+    <!-- 5. INDEKS -->
+    <div id="tab-indeks" class="section">
+        <h2>Indeks / Kolekcja Kart</h2>
+        <div id="collection-grid" class="grid"></div>
+    </div>
+
+    <!-- 6. WALKA -->
+    <div id="tab-walka" class="section">
+        <h2>Arena Walki z Bossami</h2>
         <div id="boss-selection">
             <p>Wybierz przeciwnika:</p>
             <button class="btn" onclick="startBattle('weak')">Słaby Goblin Boss</button>
@@ -315,17 +425,10 @@
         </div>
     </div>
 
-    <!-- 6. SZPITAL -->
-    <div class="section">
-        <h2>6. Szpital (Leczenie Kart)</h2>
+    <!-- 7. SZPITAL -->
+    <div id="tab-szpital" class="section">
+        <h2>Szpital (Leczenie Kart)</h2>
         <div id="hospital-grid" class="grid"></div>
-    </div>
-
-    <!-- 7. KODY -->
-    <div class="section">
-        <h2>7. Kody Promocyjne</h2>
-        <input type="text" id="promo-code-input" placeholder="Wpisz kod..." style="padding: 6px; border-radius: 4px; border: 1px solid #444; background: #222; color: #fff;">
-        <button class="btn" onclick="redeemCode()">Użyj kodu</button>
     </div>
 
     <!-- Modal nagród -->
@@ -338,8 +441,8 @@
     </div>
 
     <script>
-        let currentUser = "Gracz1";
-        let money = 1000;
+        let currentUser = "";
+        let money = 350;
         let lastDailyClaim = 0;
         let usedCodes = [];
         let selectedSpinCount = 1;
@@ -365,9 +468,38 @@
         let cardHp = { iron_man: 120, spider_man: 90, captain_america: 100, hulk: 180, hawkeye: 70 };
         let activeDeck = ["iron_man", "spider_man", null, null];
 
-        document.getElementById('current-user-display').innerText = currentUser;
-        initRoulettes(1);
-        updateUI();
+        function handleLogin() {
+            const user = document.getElementById('login-user').value.trim();
+            const pass = document.getElementById('login-pass').value.trim();
+            if(!user) { alert("Wpisz login!"); return; }
+
+            currentUser = user;
+            const usersDb = JSON.parse(localStorage.getItem('marvel_users_db')) || {};
+            if(usersDb[currentUser]) {
+                const data = usersDb[currentUser];
+                money = data.money !== undefined ? data.money : 350;
+                inventory = data.inventory || inventory;
+                cardHp = data.cardHp || cardHp;
+                activeDeck = data.activeDeck || activeDeck;
+                lastDailyClaim = data.lastDailyClaim || 0;
+                usedCodes = data.usedCodes || [];
+            } else {
+                usersDb[currentUser] = { password: pass, money, inventory, cardHp, activeDeck, lastDailyClaim, usedCodes };
+                localStorage.setItem('marvel_users_db', JSON.stringify(usersDb));
+            }
+
+            document.getElementById('login-modal').style.display = 'none';
+            initRoulettes(1);
+            updateUI();
+        }
+
+        function switchTab(tabName, btnElement) {
+            document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+            
+            document.getElementById('tab-' + tabName).classList.add('active');
+            btnElement.classList.add('active');
+        }
 
         function saveUserData() {
             if (!currentUser) return;
@@ -501,19 +633,16 @@
                 cardDiv.className = `card ${card.rarity} ${count === 0 ? 'locked' : ''}`;
                 
                 cardDiv.innerHTML = `
-                    <div class="card-inner-frame" onclick="handleCardClick('${card.id}')">
+                    <div class="card-inner-frame" onclick="handleCardClick('${card.id}')" style="cursor:pointer;">
                         <div class="card-top-bar">
                             <span>ID: ${card.id}</span>
-                            <span class="card-chrome-logo">MARVEL</span>
+                            <span>MARVEL</span>
                         </div>
                         <div class="card-avatar">
                             ${count > 0 ? `<img src="${card.icon}" alt="${card.name}">` : '❓'}
                         </div>
                         <div class="card-name-banner">${card.name}</div>
-                        <div class="card-stats-box">
-                            <span>❤️ ${hp}/${card.maxHp}</span>
-                            <span>⚔️ ${card.attack}</span>
-                        </div>
+                        <div class="card-stats-box"><span>❤️ ${hp}/${card.maxHp}</span><span>⚔️ ${card.attack}</span></div>
                         <div class="card-footer-box">
                             <span class="card-value">${card.value} $</span>
                             <span class="card-count">x${count}</span>
@@ -853,7 +982,7 @@
                     <div class="card-inner-frame">
                         <div class="card-top-bar">
                             <span>ID: ${card.id}</span>
-                            <span class="card-chrome-logo">MARVEL</span>
+                            <span>MARVEL</span>
                         </div>
                         <div class="card-avatar"><img src="${card.icon}" alt=""></div>
                         <div class="card-name-banner">${card.name}</div>
