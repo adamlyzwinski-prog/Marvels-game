@@ -115,7 +115,7 @@
             color: #ccc;
         }
 
-        /* Pasek HP w stylu Minecrafta */
+        /* Pasek HP bossa w stylu Minecrafta */
         .minecraft-hp-bar {
             width: 100%;
             background: #555;
@@ -145,7 +145,7 @@
         }
         .deck-slot {
             width: 130px;
-            height: 190px;
+            height: 180px;
             background: #222;
             border: 2px dashed #444;
             border-radius: 6px;
@@ -296,7 +296,7 @@
     <div class="section">
         <h2>5. Arena Walki z Bossami</h2>
         <div id="boss-selection">
-            <p>Wybierz przeciwnika (Uwaga: przegrana lub śmierć karty w walce oznacza jej utratę na zawsze!):</p>
+            <p>Wybierz przeciwnika:</p>
             <button class="btn" onclick="startBattle('weak')">Słaby Goblin Boss</button>
             <button class="btn" onclick="startBattle('good')">Opancerzony Najemnik</button>
             <button class="btn" onclick="startBattle('mythic')">Wielki Lord Ciemności</button>
@@ -501,20 +501,17 @@
                 cardDiv.className = `card ${card.rarity} ${count === 0 ? 'locked' : ''}`;
                 
                 cardDiv.innerHTML = `
-                    <div class="card-inner-frame" onclick="handleCardClick('${card.id}')" style="cursor:pointer;">
+                    <div class="card-inner-frame" onclick="handleCardClick('${card.id}')">
                         <div class="card-top-bar">
                             <span>ID: ${card.id}</span>
-                            <span>MARVEL</span>
+                            <span class="card-chrome-logo">MARVEL</span>
                         </div>
                         <div class="card-avatar">
                             ${count > 0 ? `<img src="${card.icon}" alt="${card.name}">` : '❓'}
                         </div>
                         <div class="card-name-banner">${card.name}</div>
-                        
-                        <div class="minecraft-hp-text">❤️ ${hp}/${card.maxHp}</div>
-                        <div class="minecraft-hp-bar"><div class="minecraft-hp-fill" style="width: ${(hp/card.maxHp)*100}%;"></div></div>
-
                         <div class="card-stats-box">
+                            <span>❤️ ${hp}/${card.maxHp}</span>
                             <span>⚔️ ${card.attack}</span>
                         </div>
                         <div class="card-footer-box">
@@ -574,11 +571,7 @@
                             <div class="card-top-bar"><span>Slot ${index+1}</span></div>
                             <div class="card-avatar" style="width:45px; height:45px;"><img src="${card.icon}" alt="${card.name}"></div>
                             <div class="card-name-banner">${card.name}</div>
-                            
-                            <div class="minecraft-hp-text" style="font-size:9px;">❤️ ${hp}/${card.maxHp}</div>
-                            <div class="minecraft-hp-bar" style="height:6px;"><div class="minecraft-hp-fill" style="width: ${(hp/card.maxHp)*100}%;"></div></div>
-
-                            <div class="card-stats-box"><span>⚔️ ${card.attack}</span></div>
+                            <div class="card-stats-box"><span>❤️ ${hp}</span><span>⚔️ ${card.attack}</span></div>
                             <button class="btn btn-sell" onclick="removeFromDeck(${index})">Usuń</button>
                         </div>
                     `;
@@ -613,10 +606,7 @@
                                 <div class="card-top-bar"><span>SZPITAL</span></div>
                                 <div class="card-avatar"><img src="${card.icon}" alt=""></div>
                                 <div class="card-name-banner">${card.name}</div>
-                                
-                                <div class="minecraft-hp-text" style="color:#ef4444;">❤️ ${hp}/${card.maxHp}</div>
-                                <div class="minecraft-hp-bar"><div class="minecraft-hp-fill" style="width: ${(hp/card.maxHp)*100}%; background: #ef4444;"></div></div>
-
+                                <div class="card-stats-box" style="color:#ef4444;"><span>❤️ ${hp}/${card.maxHp}</span></div>
                                 <button class="btn btn-sell" onclick="healCard('${card.id}', ${healCost})">Ulecz (${healCost} $)</button>
                             </div>
                         `;
@@ -692,11 +682,7 @@
                             <div class="card-top-bar"><span>Slot ${index+1}</span></div>
                             <div class="card-avatar" style="width:40px; height:40px;"><img src="${card.icon}" alt=""></div>
                             <div class="card-name-banner">${card.name}</div>
-                            
-                            <div class="minecraft-hp-text" style="font-size:9px;">❤️ ${hp}/${card.maxHp}</div>
-                            <div class="minecraft-hp-bar" style="height:6px;"><div class="minecraft-hp-fill" style="width: ${(hp/card.maxHp)*100}%;"></div></div>
-
-                            <div class="card-stats-box"><span>⚔️ ${card.attack}</span></div>
+                            <div class="card-stats-box"><span>❤️ ${hp}</span><span>⚔️ ${card.attack}</span></div>
                             ${!isDead ? `<button class="btn btn-sell" onclick="playerAttack('${cardId}')">Atakuj</button>` : '<span style="color:red; font-size:10px;">UTRACONA</span>'}
                         </div>
                     `;
@@ -752,7 +738,7 @@
             logMessage(`${currentBoss.name} kontratakuje i zadaje ${currentBoss.attack} obrażeń postać ${targetCard.name}!`);
 
             if (cardHp[randomCardId] === 0) {
-                logMessage(`⚠️ ${targetCard.name} stracił całe HP i zginął! Karta została utracona na zawsze.`);
+                logMessage(`⚠️ ${targetCard.name} stracił całe HP i zginął na zawsze!`);
                 inventory[randomCardId]--;
                 activeDeck = activeDeck.map(id => id === randomCardId ? null : id);
             }
@@ -867,15 +853,11 @@
                     <div class="card-inner-frame">
                         <div class="card-top-bar">
                             <span>ID: ${card.id}</span>
-                            <span>MARVEL</span>
+                            <span class="card-chrome-logo">MARVEL</span>
                         </div>
                         <div class="card-avatar"><img src="${card.icon}" alt=""></div>
                         <div class="card-name-banner">${card.name}</div>
-                        
-                        <div class="minecraft-hp-text">❤️ ${card.maxHp}/${card.maxHp}</div>
-                        <div class="minecraft-hp-bar"><div class="minecraft-hp-fill" style="width: 100%;"></div></div>
-
-                        <div class="card-stats-box"><span>⚔️ ${card.attack}</span></div>
+                        <div class="card-stats-box"><span>❤️ ${card.maxHp}</span><span>⚔️ ${card.attack}</span></div>
                         <div class="card-footer-box"><span class="card-value">${card.value} $</span></div>
                     </div>
                 `;
